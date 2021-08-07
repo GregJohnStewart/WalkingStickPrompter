@@ -1,9 +1,8 @@
 #include "Arduino.h"
 #include "globals.h"
 
-// the following variables are unsigned longs because the time, measured in
-// milliseconds, will quickly become a bigger number than can be stored in an int.
-unsigned long debounceDelay = 50;    // the debounce time; increase if the output flickers
+// the debounce time; increase if the output flickers
+unsigned long debounceDelay = 50;
 
 bool testTimeout(unsigned long start, unsigned long cur, unsigned long timeout){
   return cur - start <= timeout;
