@@ -6,11 +6,14 @@
  */
  #include "globals.h"
  #include "statusLogHelpers.h"
+ #include "buttonHelpers.h"
 
 void setup() {
   // Setup, turn on statis light during setup
   pinMode(LED_BUILTIN, OUTPUT);
   turnStatusLightOn();
+
+  setupButtons();
 
 
   //setup TFT display, display something simple
@@ -40,4 +43,6 @@ void setup() {
  *  4. Done
  */
 void loop() {
+  waitForButtonPress();
+  waitForButtonPress(-1);
 }

@@ -26,7 +26,7 @@ inline int TFT_ERR_IND = 2;
 inline int SD_ERR_IND = 3;
 
 /*
- * Button pins
+ * Button
  */
 // up button
 inline int UP_BUTTON = 4;
@@ -37,12 +37,15 @@ inline int LEFT_BUTTON = 2;
 // right button
 inline int RIGHT_BUTTON = 10;
 
+inline int BUTT_ARR[] = {4, 3, 2, 10};
+
 // yes button
 inline int YES_BUTTON = 10;
 // no button
 inline int NO_BUTTON = 2;
 // cancel button
 inline int CANCEL_BUTTON = 2;
+
 
 /*
  * TFT/SD Pins
