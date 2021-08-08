@@ -26,4 +26,7 @@ void alertStatus(int ind){
   }
 }
 
+//TODO:: add thing to write to tft notifying of sd activity
+//TODO:: add thing to clear sd activity notifier
+
 #endif

@@ -9,7 +9,7 @@
  #include "buttonHelpers.h"
 
 void setup() {
-  // Setup, turn on statis light during setup
+  // Setup, turn on status light during setup
   pinMode(LED_BUILTIN, OUTPUT);
   turnStatusLightOn();
 
@@ -17,6 +17,7 @@ void setup() {
 
 
   //setup TFT display, display something simple
+  
 
   //setup SD card info
 
