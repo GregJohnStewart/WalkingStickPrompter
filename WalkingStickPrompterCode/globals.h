@@ -14,6 +14,12 @@
 //version
 inline char VERSION[] = "0.0.1";
 
+/**
+ * Serial Logging
+ */
+inline bool SERIAL_LOGS_ENABLED = true;
+inline int SERIAL_LOG_BAUD = 9600;
+
 /*
  * Status
  */
@@ -46,6 +52,10 @@ inline int NO_BUTTON = 2;
 // cancel button
 inline int CANCEL_BUTTON = 2;
 
+/*
+ * Menu Entries
+ */
+inline const int MAX_NUM_MENU_ENTRIES = 10;
 
 /*
  * TFT/SD Pins

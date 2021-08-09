@@ -7,24 +7,36 @@
  #include "globals.h"
  #include "statusLogHelpers.h"
  #include "buttonHelpers.h"
+ #include "MenuEntry.h"
 
 void setup() {
   // Setup, turn on status light during setup
-  pinMode(LED_BUILTIN, OUTPUT);
+  pinMode(STATUS_LED, OUTPUT);
   turnStatusLightOn();
 
+  Serial.begin(SERIAL_LOG_BAUD);
+  writeSerialLine("\nBegin Setup...");
+
   setupButtons();
+  
+  writeSerialLine(1, "Done Setting up Buttons.");
 
 
   //setup TFT display, display something simple
+  writeSerialLine(1, "Done Setting up TFT.");
   
 
   //setup SD card info
+  writeSerialLine(1, "Done Setting up SD.");
 
   //display basic infos
+  writeSerialLine(1, "Displaying Splash Screen...");
+  writeSerialLine(1, "Done Displaying Splash Screen.");
   
   // done with setup
   turnStatusLightOff();
+  
+  writeSerialLine("Setup Complete.");
 }
 
 /**
