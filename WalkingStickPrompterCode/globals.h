@@ -8,11 +8,15 @@
 #define GLOBALS_H
 
 #include "Arduino.h"
+#include "Adafruit_GFX.h"
+#include "Adafruit_ILI9341.h"
+
 /*
  * Basics
  */
 //version
-inline const char VERSION[] = "0.0.1";
+inline const String VERSION = "0.0.1";
+inline int CUR_TAB_LEVEL = 0;
 
 /**
  * Serial Logging
@@ -60,6 +64,14 @@ inline const unsigned int MAX_NUM_MENU_ENTRIES = 10;
 /*
  * TFT/SD Pins
  */
-
+inline const unsigned int TFT_CS = 6;
+inline const unsigned int TFT_DC = 9;
+inline const unsigned int TFT_RST = -1;
+ 
+ 
+/*
+ * TFT Objects
+ */
+inline Adafruit_ILI9341 TFT = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
 #endif

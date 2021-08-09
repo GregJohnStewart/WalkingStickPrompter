@@ -19,6 +19,7 @@ With the
 - [Adafruit 2.2" TFT Display with SD Card Reader](https://learn.adafruit.com/2-2-tft-display)
 - [Adafruit ILI9341 Arduino Library](https://github.com/adafruit/Adafruit_ILI9341)
 - [Adafruit TFT Display Example](https://github.com/adafruit/Adafruit_ILI9341/blob/master/examples/graphicstest/graphicstest.ino)
+- [Adafruit Graphics Primitives](https://learn.adafruit.com/adafruit-gfx-graphics-library/graphics-primitives)
 
 ### Environment Setup
 
