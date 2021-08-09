@@ -12,50 +12,50 @@
  * Basics
  */
 //version
-inline char VERSION[] = "0.0.1";
+inline const char VERSION[] = "0.0.1";
 
 /**
  * Serial Logging
  */
-inline bool SERIAL_LOGS_ENABLED = true;
-inline int SERIAL_LOG_BAUD = 9600;
+inline const bool SERIAL_LOGS_ENABLED = true;
+inline const int SERIAL_LOG_BAUD = 9600;
 
 /*
  * Status
  */
 // status led pin
-inline int STATUS_LED = LED_BUILTIN;
-inline int ALERT_STATUS_BLINK_ON_DUR = 100;
-inline int ALERT_STATUS_BLINK_OFF_DUR = 250;
+inline const int STATUS_LED = LED_BUILTIN;
+inline const unsigned int ALERT_STATUS_BLINK_ON_DUR = 100;
+inline const unsigned int ALERT_STATUS_BLINK_OFF_DUR = 250;
 //indicators
-inline int TFT_ERR_IND = 2;
-inline int SD_ERR_IND = 3;
+inline const unsigned int TFT_ERR_IND = 2;
+inline const unsigned int SD_ERR_IND = 3;
 
 /*
  * Button
  */
 // up button
-inline int UP_BUTTON = 4;
+inline const unsigned int UP_BUTTON = 4;
 // down button
-inline int DOWN_BUTTON = 3;
+inline const unsigned int DOWN_BUTTON = 3;
 // left button
-inline int LEFT_BUTTON = 2;
+inline const unsigned int LEFT_BUTTON = 2;
 // right button
-inline int RIGHT_BUTTON = 10;
+inline const unsigned int RIGHT_BUTTON = 10;
 
-inline int BUTT_ARR[] = {4, 3, 2, 10};
+inline const unsigned int BUTT_ARR[] = {UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIGHT_BUTTON};
 
 // yes button
-inline int YES_BUTTON = 10;
+inline const unsigned int YES_BUTTON = RIGHT_BUTTON;
 // no button
-inline int NO_BUTTON = 2;
+inline const unsigned int NO_BUTTON = LEFT_BUTTON;
 // cancel button
-inline int CANCEL_BUTTON = 2;
+inline const unsigned int CANCEL_BUTTON = LEFT_BUTTON;
 
 /*
  * Menu Entries
  */
-inline const int MAX_NUM_MENU_ENTRIES = 10;
+inline const unsigned int MAX_NUM_MENU_ENTRIES = 10;
 
 /*
  * TFT/SD Pins
