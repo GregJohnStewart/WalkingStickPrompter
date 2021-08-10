@@ -9,6 +9,9 @@
 #include "buttonHelpers.h"
 #include "MenuEntry.h"
 #include "tftHelpers.h"
+#include "screenSizeHelpers.h"
+
+int temp = 1;
 
 void setup() {
   // Setup, turn on status light during setup
@@ -38,6 +41,7 @@ void setup() {
   turnStatusLightOff();
 
   writeSerialLine(F("Setup Complete."));
+  delay(5000);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
 }
@@ -66,33 +70,22 @@ void loop() {
     delay(250);
     }
   */
+  TFT.fillScreen(ILI9341_BLACK);
+  delay(500);
+  TFT.setCursor(0, 0);
+  TFT.setTextSize(temp);
   
-
-  String text = " . . Text scrolling on Adafruit TFT shield . ."; // sample text
-
-  const int width = 18; // width of the marquee display (in characters)
-
-  // Loop once through the string
-
-  for (int offset = 0; offset < text.length(); offset++){
-
-    // Construct the string to display for this iteration
-    String t = "";
-    for (int i = 0; i < width; i++) {
-      t += text.charAt((offset + i) % text.length());
-    }
-
-    // Print the string for this iteration
-
-    TFT.setCursor(0, TFT.height() / 2 - 10); // display will be halfway down screen
-
-    TFT.print(t);
-
-    // Short delay so the text doesn't move too fast
-
-    delay(200);
-
+  
+  TFT.print(temp);
+  for(int i = 2; i < getNumChars(temp); i++){
+    TFT.print("_");
+  }
+  TFT.print("!");
+  temp++;
+  
+  if(temp == 6){
+    temp = 1;
   }
 
-
+  delay(60000);
 }

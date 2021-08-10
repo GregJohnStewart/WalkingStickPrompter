@@ -7,6 +7,7 @@ void setupTft(){
   writeSerialLine(F("Setting up TFT Display..."));
   CUR_TAB_LEVEL++;
   TFT.begin();
+  TFT.setRotation(3);
   {
     uint8_t x = TFT.readcommand8(ILI9341_RDMODE);
     writeSerialLine("Display Power Mode: 0x" + String(x, HEX));
@@ -18,8 +19,9 @@ void setupTft(){
     writeSerialLine("Image Format: 0x" + String(x, HEX));
     x = TFT.readcommand8(ILI9341_RDSELFDIAG);
     writeSerialLine("Self Diagnostic: 0x" + String(x, HEX));
+    writeSerialLine("Height: " + String(TFT.height()));
+    writeSerialLine("Width: " + String(TFT.width()));
   }
-  TFT.setRotation(3);
   TFT.fillScreen(ILI9341_BLACK);
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE Setting up TFT Display."));

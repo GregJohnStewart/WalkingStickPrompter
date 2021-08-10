@@ -63,8 +63,6 @@ void displaySplashScreen(){
   writeSerialLine(F("Displaying Splash Screen..."));
   CUR_TAB_LEVEL++;
   
-  
-  
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_WHITE);
   TFT.setTextSize(3.5);
@@ -77,13 +75,6 @@ void displaySplashScreen(){
   TFT.println(VERSION);
   
   TFT.setTextColor(ILI9341_WHITE);
-  
-  
-  for(int i = 1; i <= 5; i++){
-    TFT.setTextSize(i);
-    TFT.println(i);
-  }
-  
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Done Displaying Splash Screen."));

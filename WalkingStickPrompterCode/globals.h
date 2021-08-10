@@ -74,4 +74,11 @@ inline const unsigned int TFT_RST = -1;
  */
 inline Adafruit_ILI9341 TFT = Adafruit_ILI9341(TFT_CS, TFT_DC);
 
+/*
+ * Globals for TFT
+ */
+//big array indexed by the text size to use
+inline int BASE_FONT_HEIGHT = 8;//pixels
+inline int BASE_FONT_WIDTH = 6;//pixels
+
 #endif
