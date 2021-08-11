@@ -21,10 +21,15 @@ void setup() {
   Serial.begin(SERIAL_LOG_BAUD);
   writeSerialLine(F("\n\n\nBegin Setup..."));
   CUR_TAB_LEVEL++;
+  
+  Serial.println("High: " + String(HIGH));
+  Serial.println("Low: " + String(LOW));
 
   setupButtons();
 
   writeSerialLine(F("Done Setting up Buttons."));
+  writeSerialLine("Status LED pin: " + String(STATUS_LED));
+  
 
 
   //setup TFT display, display something simple
@@ -44,6 +49,7 @@ void setup() {
   delay(5000);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
+  TFT.setTextSize(MENU_FONT_SIZE);
 }
 
 /**
@@ -70,6 +76,8 @@ void loop() {
     delay(250);
     }
   */
+  
+  /* Screen resolutions *
   TFT.fillScreen(ILI9341_BLACK);
   delay(500);
   TFT.setCursor(0, 0);
@@ -86,6 +94,19 @@ void loop() {
   if(temp == 6){
     temp = 1;
   }
+  /* */
+  
+  /* */
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.setCursor(0, 0);
+  TFT.print("Waiting for button press...");
+  
+  temp = waitForButtonPress();
+  
+  TFT.setCursor(0, 0);
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.print(String(temp) + " Was Pressed!");
+  /* */
 
-  delay(60000);
+  delay(2000);
 }

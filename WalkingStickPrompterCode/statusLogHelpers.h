@@ -65,8 +65,8 @@ void displaySplashScreen(){
   
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_WHITE);
-  TFT.setTextSize(3.5);
-  TFT.println(F("Walking Stick Prompter"));
+  TFT.setTextSize(4);
+  TFT.println(F("Walking Stick\nPrompter"));
   
   TFT.setTextSize(3);
   TFT.print(F("Version: "));
