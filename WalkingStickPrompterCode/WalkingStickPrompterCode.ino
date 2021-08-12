@@ -9,6 +9,8 @@
 #include "buttonHelpers.h"
 #include "MenuEntry.h"
 #include "tftHelpers.h"
+#include "sdHelpers.h"
+#include "tftSdModuleHelpers.h"
 #include "screenSizeHelpers.h"
 
 int temp = 1;
@@ -19,6 +21,9 @@ void setup() {
   turnStatusLightOn();
 
   Serial.begin(SERIAL_LOG_BAUD);
+  if(!Serial){
+    SERIAL_LOGS_ENABLED = false;
+  }
   writeSerialLine(F("\n\n\nBegin Setup..."));
   CUR_TAB_LEVEL++;
   
@@ -37,7 +42,7 @@ void setup() {
 
 
   //setup SD card info
-  writeSerialLine(F("Done Setting up SD."));
+  setupSD();
 
   //display basic infos
   displaySplashScreen();
@@ -45,6 +50,7 @@ void setup() {
   // done with setup
   turnStatusLightOff();
 
+  CUR_TAB_LEVEL--;
   writeSerialLine(F("Setup Complete."));
   delay(5000);
   TFT.fillScreen(ILI9341_BLACK);

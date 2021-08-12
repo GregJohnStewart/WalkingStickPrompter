@@ -3,7 +3,8 @@
 #include "globals.h"
 
 // the debounce time; increase if the output flickers
-unsigned long debounceDelay = 50;
+const unsigned long debounceDelay = 25;
+const unsigned int PRESSED_READING = LOW;
 
 bool testTimeout(unsigned long start, unsigned long cur, unsigned long timeout){
   
@@ -16,22 +17,22 @@ bool testTimeout(unsigned long start, unsigned long timeout){
 bool readButtonState(int button){
   int reading = digitalRead(button);
   // read the state of the switch into a local variable:
-  Serial.println("\tButton reading: " + String(reading));
+  //Serial.println("\tButton reading: " + String(reading));
 
-  if(reading != HIGH){
-    Serial.println("\tButton was LOW");
+  if(reading != PRESSED_READING){
+    //Serial.println("\tButton was not pressed");
     return false;
   }
-    Serial.println("\tButton was HIGH");
+    //Serial.println("\tButton was pressed");
   unsigned long initialTime = millis();
   do {
     reading = digitalRead(button);
-    if(reading == LOW){
-      Serial.println("\tBack to LOW");
+    if(reading != PRESSED_READING){
+      //Serial.println("\tButton not actually pressed");
       return false;
     }
   } while(testTimeout(initialTime, debounceDelay));
-  Serial.println("\tStill HIGH");
+  //Serial.println("\tStill pressed");
 
   return true;
 }
@@ -49,7 +50,7 @@ int waitForButtonPress(unsigned long timeout){
   
   do{
     for (int i = 0; i < sizeof BUTT_ARR / sizeof BUTT_ARR[0]; i++) {
-      Serial.println("Testing button: " + String(BUTT_ARR[i]));
+      //Serial.println("Testing button: " + String(BUTT_ARR[i]));
       if(readButtonState(BUTT_ARR[i])){
       	  //writeSerialLine("Button was pressed: " + BUTT_ARR[i]);
           //CUR_TAB_LEVEL--;
@@ -69,8 +70,8 @@ int waitForButtonPress(){
 }
 
 void setupButtons(){
-  pinMode(UP_BUTTON, INPUT);
-  pinMode(DOWN_BUTTON, INPUT);
-  pinMode(LEFT_BUTTON, INPUT);
-  pinMode(RIGHT_BUTTON, INPUT);
+  pinMode(UP_BUTTON, INPUT_PULLUP);
+  pinMode(DOWN_BUTTON, INPUT_PULLUP);
+  pinMode(LEFT_BUTTON, INPUT_PULLUP);
+  pinMode(RIGHT_BUTTON, INPUT_PULLUP);
 }

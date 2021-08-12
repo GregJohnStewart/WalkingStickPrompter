@@ -10,6 +10,7 @@
 #include "Arduino.h"
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
+#include <SD.h>
 
 /*
  * Basics
@@ -21,7 +22,7 @@ inline int CUR_TAB_LEVEL = 0;
 /**
  * Serial Logging
  */
-inline const bool SERIAL_LOGS_ENABLED = true;
+inline bool SERIAL_LOGS_ENABLED = true;
 inline const int SERIAL_LOG_BAUD = 9600;
 
 /*
@@ -29,8 +30,8 @@ inline const int SERIAL_LOG_BAUD = 9600;
  */
 // status led pin
 inline const int STATUS_LED = LED_BUILTIN;
-inline const unsigned int ALERT_STATUS_BLINK_ON_DUR = 100;
-inline const unsigned int ALERT_STATUS_BLINK_OFF_DUR = 250;
+inline const unsigned int ALERT_STATUS_BLINK_ON_DUR = 500;
+inline const unsigned int ALERT_STATUS_BLINK_OFF_DUR = 500;
 //indicators
 inline const unsigned int TFT_ERR_IND = 2;
 inline const unsigned int SD_ERR_IND = 3;
@@ -76,4 +77,16 @@ inline int BASE_FONT_HEIGHT = 8;//pixels
 inline int BASE_FONT_WIDTH = 6;//pixels
 inline int MENU_FONT_SIZE = 2;
 
+/*
+ * SD Objects
+ */
+inline Sd2Card card;
+inline SdVolume volume;
+inline SdFile root;
+
+/*
+ * Globals for SD
+ */
+inline const int SD_CS = 5;
+inline const int CHIP_SELECT = 10;//don't change this
 #endif

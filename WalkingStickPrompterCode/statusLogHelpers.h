@@ -17,14 +17,20 @@ void turnStatusLightOff(){
   digitalWrite(STATUS_LED, LOW);
 }
 
-void alertStatus(int ind){
+void alertStatus(int ind, bool indefinately){
   turnStatusLightOff();
-  for(int i = 0; i < ind; i++){
-    turnStatusLightOn();
-    delay(ALERT_STATUS_BLINK_ON_DUR);
-    turnStatusLightOff();
-    delay(ALERT_STATUS_BLINK_OFF_DUR);
-  }
+  do {
+    for(int i = 0; i < ind; i++){
+      turnStatusLightOn();
+      delay(ALERT_STATUS_BLINK_ON_DUR);
+      turnStatusLightOff();
+      delay(ALERT_STATUS_BLINK_OFF_DUR);
+    }
+    if(indefinately){
+      delay(ALERT_STATUS_BLINK_OFF_DUR * 2);
+    }
+    Serial.println("alerted");
+  } while(indefinately);
 }
 
 
