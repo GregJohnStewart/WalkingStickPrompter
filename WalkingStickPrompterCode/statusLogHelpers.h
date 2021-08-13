@@ -9,6 +9,7 @@
 
 #include "Arduino.h"
 #include "globals.h"
+#include "tftSdModuleHelpers.h"
 
 void turnStatusLightOn(){
   digitalWrite(STATUS_LED, HIGH);
@@ -29,7 +30,7 @@ void alertStatus(int ind, bool indefinately){
     if(indefinately){
       delay(ALERT_STATUS_BLINK_OFF_DUR * 2);
     }
-    Serial.println("alerted");
+    //Serial.println("alerted");
   } while(indefinately);
 }
 
@@ -69,6 +70,8 @@ void displaySplashScreen(){
   writeSerialLine(F("Displaying Splash Screen..."));
   CUR_TAB_LEVEL++;
   
+  //TFT.fillScreen(ILI9341_BLACK);
+  
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_WHITE);
   TFT.setTextSize(4);
@@ -84,6 +87,20 @@ void displaySplashScreen(){
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Done Displaying Splash Screen."));
+}
+
+void displayErrMessage(String message, bool hang){
+  
+  //TFT.fillScreen(ILI9341_BLACK);
+  
+  TFT.setCursor(0, 0);
+  TFT.setTextColor(ILI9341_RED);
+  TFT.setTextSize(3);
+  TFT.println(message);
+  
+  if(hang){
+    while(1);
+  }
 }
 
 

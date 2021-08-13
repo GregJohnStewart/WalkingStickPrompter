@@ -4,11 +4,11 @@
 #include "globals.h"
 
 int getNumRows(int fontSize){
-  return TFT.width() / (BASE_FONT_WIDTH * fontSize);
+  return TFT.height() / (BASE_FONT_HEIGHT * fontSize);
 }
 
 int getNumCols(int fontSize){
-  return TFT.height() / (BASE_FONT_HEIGHT * fontSize);
+  return TFT.width() / (BASE_FONT_WIDTH * fontSize);
 }
 
 int getNumChars(int fontSize){

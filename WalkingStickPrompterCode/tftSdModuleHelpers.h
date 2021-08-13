@@ -5,15 +5,6 @@
 #include "globals.h"
 
 
-void setupUseTFT(){
-  digitalWrite(SD_CS, HIGH);
-  digitalWrite(TFT_CS, LOW);
-}
-
-void setupUseSD(){
-  digitalWrite(TFT_CS, HIGH);
-  digitalWrite(SD_CS, LOW);
-}
 
 
 

@@ -8,6 +8,7 @@
 #include "statusLogHelpers.h"
 #include "buttonHelpers.h"
 #include "MenuEntry.h"
+#include "menuEntryHelpers.h"
 #include "tftHelpers.h"
 #include "sdHelpers.h"
 #include "tftSdModuleHelpers.h"
@@ -18,6 +19,9 @@ int temp = 1;
 void setup() {
   // Setup, turn on status light during setup
   pinMode(STATUS_LED, OUTPUT);
+  pinMode(TFT_CS, OUTPUT);
+  pinMode(SD_CS, OUTPUT);
+  
   turnStatusLightOn();
 
   Serial.begin(SERIAL_LOG_BAUD);
@@ -26,16 +30,21 @@ void setup() {
   }
   writeSerialLine(F("\n\n\nBegin Setup..."));
   CUR_TAB_LEVEL++;
-  
-  Serial.println("High: " + String(HIGH));
-  Serial.println("Low: " + String(LOW));
 
   setupButtons();
 
   writeSerialLine(F("Done Setting up Buttons."));
-  writeSerialLine("Status LED pin: " + String(STATUS_LED));
   
-
+  //debugging
+  
+  //setupUseTFT();
+  
+  //setupUseSD();
+  //setupSD();
+  
+  //return;
+  
+  
 
   //setup TFT display, display something simple
   setupTft();
@@ -75,14 +84,30 @@ void setup() {
     4. Done
 */
 void loop() {
-  /*
-    for(double i = 1; i < 10; i += 0.1){
-    TFT.setTextSize(i);
-    TFT.println(i);
-    delay(250);
-    }
-  */
+
+  selectFile();
   
+  /* Button pressing *
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.setCursor(0, 0);
+  TFT.print("Waiting for button press...");
+  
+  temp = waitForButtonPress();
+  
+  TFT.setCursor(0, 0);
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.print(String(temp) + " Was Pressed!");
+  delay(2000);
+  /* */
+  
+  
+  
+  
+  
+  
+}
+
+
   /* Screen resolutions *
   TFT.fillScreen(ILI9341_BLACK);
   delay(500);
@@ -102,7 +127,9 @@ void loop() {
   }
   /* */
   
-  /* */
+  
+
+  /* Button pressing *
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
   TFT.print("Waiting for button press...");
@@ -112,7 +139,5 @@ void loop() {
   TFT.setCursor(0, 0);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.print(String(temp) + " Was Pressed!");
-  /* */
-
   delay(2000);
-}
+  /* */

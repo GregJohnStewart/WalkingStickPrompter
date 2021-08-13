@@ -80,13 +80,13 @@ inline int MENU_FONT_SIZE = 2;
 /*
  * SD Objects
  */
-inline Sd2Card card;
-inline SdVolume volume;
-inline SdFile root;
+inline Sd2Card SD_CARD;
+inline SdVolume SD_VOLUME;
+
 
 /*
  * Globals for SD
  */
 inline const int SD_CS = 5;
-inline const int CHIP_SELECT = 10;//don't change this
+
 #endif

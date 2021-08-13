@@ -6,6 +6,14 @@ A walking stick tele-prompter.
 
 With the 
 
+### SD Card
+
+The SD card has several "gotcha's":
+
+- Must be formatted as FAT
+- Directories currently not supported; TODO in the future to support
+- Keep the SD relatively clean, not too many files. For file selection need all the file names read in and there isn't a ton or RAM to go around!
+
 ## Build Documentation
 
 ### Bill of Materials
@@ -20,6 +28,8 @@ With the
 - [Adafruit ILI9341 Arduino Library](https://github.com/adafruit/Adafruit_ILI9341)
 - [Adafruit TFT Display Example](https://github.com/adafruit/Adafruit_ILI9341/blob/master/examples/graphicstest/graphicstest.ino)
 - [Adafruit Graphics Primitives](https://learn.adafruit.com/adafruit-gfx-graphics-library/graphics-primitives)
+- Adafruit SD examples in the IDE
+- 
 
 ### Environment Setup
 
@@ -49,4 +59,10 @@ Schematic view:
 Requires the addition of the Adafruit resource pack:
 
 https://learn.adafruit.com/using-the-adafruit-library-with-fritzing/import-the-library-into-fritzing
+
+## Future TODOs:
+
+- Support directories
+- backlight control
+- 
 
