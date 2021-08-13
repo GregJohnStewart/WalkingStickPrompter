@@ -50,6 +50,8 @@ inline const unsigned int BUTT_ARR[] = {UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIG
 inline const unsigned int YES_BUTTON = RIGHT_BUTTON;
 inline const unsigned int NO_BUTTON = LEFT_BUTTON;
 inline const unsigned int CANCEL_BUTTON = LEFT_BUTTON;
+inline const unsigned int SELECT_BUTTON = RIGHT_BUTTON;
+inline const unsigned int BACK_BUTTON = LEFT_BUTTON;
 
 /*
  * Menu Entries
@@ -80,8 +82,7 @@ inline int MENU_FONT_SIZE = 2;
 /*
  * SD Objects
  */
-inline Sd2Card SD_CARD;
-inline SdVolume SD_VOLUME;
+
 
 
 /*

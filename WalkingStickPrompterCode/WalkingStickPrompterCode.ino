@@ -61,7 +61,7 @@ void setup() {
 
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Setup Complete."));
-  delay(5000);
+  delay(2000);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
   TFT.setTextSize(MENU_FONT_SIZE);

@@ -1,13 +1,16 @@
 #include "MenuEntry.h"
 
-MenuEntry::MenuEntry(int idIn, String &labelIn){
+MenuEntry::MenuEntry(){
+}
+
+MenuEntry::MenuEntry(int idIn, String labelIn){
     id = idIn;
     label = labelIn;
     parent = NULL;
     subEntries = NULL;
 }
     
-MenuEntry::MenuEntry(int idIn, String &labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn){
+MenuEntry::MenuEntry(int idIn, String labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn){
     MenuEntry(idIn, labelIn);
 }
     
@@ -15,7 +18,7 @@ int MenuEntry::getId(){
     return id;
 }
     
-String& MenuEntry::getLabel(){
+String MenuEntry::getLabel(){
     return label;
 }
     
