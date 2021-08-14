@@ -61,7 +61,8 @@ void setup() {
 
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Setup Complete."));
-  delay(2000);
+  outFreeRam();
+  delay(1000);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
   TFT.setTextSize(MENU_FONT_SIZE);
@@ -86,7 +87,7 @@ void setup() {
 void loop() {
 
   selectFile();
-  
+  outFreeRam();
   /* Button pressing *
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);

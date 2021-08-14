@@ -71,7 +71,7 @@ MenuEntry selectEntry(String title, MenuEntry entries[], int numEntries){
     if(curSelection >= numEntries){
       curSelection = 0;
     }
-  }while(buttonPressed != SELECT_BUTTON || buttonPressed != BACK_BUTTON);
+  }while(buttonPressed != SELECT_BUTTON && buttonPressed != BACK_BUTTON);
   
   //TODO:: handle back button 
   

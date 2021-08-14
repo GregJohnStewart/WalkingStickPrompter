@@ -46,8 +46,12 @@ String selectFile(){
   
   const int numFiles = getNumFilesInDir("/");
   MenuEntry* entries = new MenuEntry[numFiles];
+  writeSerialLine(F("created arr of entries"));
   File root = SD.open("/");
+  writeSerialLine(F("Opened root"));
   
+  writeSerialLine(F("Getting File List"));
+  CUR_TAB_LEVEL++;
   {
     int i = 0;
     File curEntry;
@@ -68,11 +72,15 @@ String selectFile(){
       i++;
     }while(true);
   }
+  root.close();
+  CUR_TAB_LEVEL--;
+  writeSerialLine(F("DONE."));
   
   MenuEntry selected = selectEntry(F("Select a file:"), entries, numFiles);
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
+  return selected.getLabel();
 }
 
 

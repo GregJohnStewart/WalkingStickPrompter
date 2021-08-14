@@ -34,6 +34,11 @@ void alertStatus(int ind, bool indefinately){
   } while(indefinately);
 }
 
+int freeRam () {
+  extern int __heap_start, *__brkval; 
+  int v; 
+  return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
+}
 
 String getTabs(int numTabs){
   String tabs = "";
@@ -63,6 +68,12 @@ void writeSerial(String line){
 
 void writeSerialLine(String line){
   writeSerial(true, line);
+}
+
+
+
+void outFreeRam(){
+  writeSerial(true, "Free ram: " + String(freeRam()));
 }
 
 
