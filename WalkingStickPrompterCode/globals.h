@@ -16,7 +16,7 @@
  * Basics
  */
 //version
-inline const String VERSION = "0.0.1";
+inline const char VERSION[6] = "0.0.1";
 inline int CUR_TAB_LEVEL = 0;
 
 /**

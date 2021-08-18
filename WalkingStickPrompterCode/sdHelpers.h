@@ -6,8 +6,9 @@
 #include "SD.h"
 
 
-const int getNumFilesInDir(String dirLoc){
-  writeSerialLine("Getting number of files in " + dirLoc);
+const int getNumFilesInDir(char* dirLoc){
+  writeSerial(F("Getting number of files in "));
+  writeSerialLine(dirLoc);
   CUR_TAB_LEVEL++;
   
   File dir = SD.open(dirLoc);
@@ -30,11 +31,13 @@ const int getNumFilesInDir(String dirLoc){
   dir.close();
   
   CUR_TAB_LEVEL--;
-  writeSerialLine("Done (" + String(i, DEC) + ")");
+  writeSerial(F("Done ("));
+  writeSerial(i);
+  writeSerialLine(F(")"));
   return i;
 }
 
-String selectFile(){
+const char* selectFile(){
   writeSerialLine(F("Selecting file..."));
   CUR_TAB_LEVEL++;
   //inline SdVolume volume;
@@ -44,10 +47,11 @@ String selectFile(){
   //TODO:: pass to MenuEntries Selector to get entry
   //TODO:: return file
   
-  const int numFiles = getNumFilesInDir("/");
+  const char* dir = (const char PROGMEM *)F("/");
+  const int numFiles = getNumFilesInDir(dir);
   MenuEntry* entries = new MenuEntry[numFiles];
   writeSerialLine(F("created arr of entries"));
-  File root = SD.open("/");
+  File root = SD.open(dir);
   writeSerialLine(F("Opened root"));
   
   writeSerialLine(F("Getting File List"));
@@ -66,9 +70,10 @@ String selectFile(){
       if (curEntry.isDirectory()) {
         continue;
       }
-      String name = String(curEntry.name());
-      writeSerialLine(String(i) + " " + name);
-      entries[i] = MenuEntry(i, name);
+      writeSerial(i);
+      writeSerial(F(" "));
+      writeSerial(curEntry.name());
+      entries[i] = MenuEntry(i, curEntry.name());
       i++;
     }while(true);
   }
@@ -80,13 +85,8 @@ String selectFile(){
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
-  return selected.getLabel();
+  return selected.getLabelCopy();
 }
-
-
-
-
-
 
 
 void setupSD(){

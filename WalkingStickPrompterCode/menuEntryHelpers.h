@@ -3,17 +3,18 @@
 
 #include "screenSizeHelpers.h"
 
-String getSep(int fontSize){
-  String output = "";
+char* getSep(int fontSize){
+  int numCols = getNumCols(fontSize);
+  char* output = new char[numCols + 1];
   
-  for(int i = 0; i < getNumCols(fontSize); i++){
-    output += F("-");
+  for(int i = 0; i < numCols; i++){
+    output[i] = F("-");
   }
   return output;
 }
 
 
-void drawMenu(String title, MenuEntry entries[], int numEntries, int selected){
+void drawMenu(char* title, MenuEntry entries[], int numEntries, int selected){
   writeSerialLine(F("Drawing Menu..."));
   CUR_TAB_LEVEL++;
 
@@ -29,7 +30,11 @@ void drawMenu(String title, MenuEntry entries[], int numEntries, int selected){
       TFT.setTextColor(ILI9341_BLACK, ILI9341_WHITE);
     }
   
-    writeSerialLine(String(entries[i].getId(), DEC) + " " + entries[i].getLabel());
+    writeSerial(entries[i].getId());
+    writeSerial(" ");
+    writeSerialLine(entries[i].getLabel());
+    
+    
     TFT.println(entries[i].getLabel());
     
     if(i == selected){
@@ -41,11 +46,7 @@ void drawMenu(String title, MenuEntry entries[], int numEntries, int selected){
   writeSerialLine(F("Done Drawing Menu."));
 }
 
-
-
-
-
-MenuEntry selectEntry(String title, MenuEntry entries[], int numEntries){
+MenuEntry selectEntry(char* title, MenuEntry entries[], int numEntries){
   writeSerialLine(F("Selecting entry..."));
   CUR_TAB_LEVEL++;
   
@@ -76,8 +77,15 @@ MenuEntry selectEntry(String title, MenuEntry entries[], int numEntries){
   //TODO:: handle back button 
   
   CUR_TAB_LEVEL--;
-  writeSerialLine("DONE Selecting entry (" + String(curSelection) + ")");
+  writeSerial(F("DONE Selecting entry ("));
+  writeSerial(curSelection);
+  writeSerialLine(F(")"));
+  
   return entries[curSelection];
+}
+
+MenuEntry selectEntry(const __FlashStringHelper * title, MenuEntry entries[], int numEntries){
+    return selectEntry((const char PROGMEM *)title, entries, numEntries);
 }
 
 #endif

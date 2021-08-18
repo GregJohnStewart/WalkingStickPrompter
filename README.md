@@ -30,6 +30,7 @@ The SD card has several "gotcha's":
 - [Adafruit TFT Display Example](https://github.com/adafruit/Adafruit_ILI9341/blob/master/examples/graphicstest/graphicstest.ino)
 - [Adafruit Graphics Primitives](https://learn.adafruit.com/adafruit-gfx-graphics-library/graphics-primitives)
 - Adafruit SD examples in the IDE
+- https://cpp4arduino.com/2020/02/07/how-to-format-strings-without-the-string-class.html
 - 
 
 ### Environment Setup

@@ -40,42 +40,66 @@ int freeRam () {
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-String getTabs(int numTabs){
-  String tabs = "";
+const char* getTabs(const int numTabs){
+  char* tabs = new char[numTabs + 1];
 
   for(int i = 0; i < numTabs; i++){
-    tabs += "\t";
+    tabs[i] = "\t";
   }
+  tabs[numTabs] = "\0";
+  
   return tabs;
 }
 
-void writeSerial(bool newline, String line){
+void writeSerial(bool newline, const char* line){
   if(!SERIAL_LOGS_ENABLED){
     return;
   }
-  String tabs = getTabs(CUR_TAB_LEVEL);
+  const char* tabs = getTabs(CUR_TAB_LEVEL);
   
+  Serial.print(tabs);
   if(newline){
-    Serial.println(tabs + line);
+    Serial.println(line);
   } else {
-    Serial.print(tabs + line);
+    Serial.print(line);
   }
+  delete[] tabs;
 }
 
-void writeSerial(String line){
+void writeSerial(const char* line){
   writeSerial(false, line);
 }
 
-void writeSerialLine(String line){
+void writeSerialLine(const char* line){
   writeSerial(true, line);
 }
 
-
-
-void outFreeRam(){
-  writeSerial(true, "Free ram: " + String(freeRam()));
+void writeSerial(const __FlashStringHelper * ifsh){
+  const char* PROGMEM line = (const char PROGMEM *)ifsh;
+  writeSerial(false, line);
 }
 
+void writeSerialLine(const __FlashStringHelper * ifsh){
+  const char* PROGMEM line = (const char PROGMEM *)ifsh;
+  writeSerial(true, line);
+}
+
+void writeSerialLine(const int num){
+  char s[9];
+  snprintf(s, sizeof(s), "%i", num);
+  writeSerial(true, s);
+}
+
+void writeSerial(int num){
+  char s[9];
+  snprintf(s, sizeof(s), "%i", num);
+  writeSerial(false, s);
+}
+
+void outFreeRam(){
+  writeSerial(F("Free ram: "));
+  writeSerialLine(freeRam());
+}
 
 void displaySplashScreen(){
   writeSerialLine(F("Displaying Splash Screen..."));
@@ -96,11 +120,26 @@ void displaySplashScreen(){
   
   TFT.setTextColor(ILI9341_WHITE);
   
+  TFT.println();
+  TFT.setTextSize(1);
+  
+  TFT.print(F("Serial Logging: "));
+  
+  if(SERIAL_LOGS_ENABLED){ 
+    TFT.setTextColor(ILI9341_GREEN);
+    TFT.println("ENABLED");
+  } else {
+    TFT.println("Off");
+  }
+  
+  TFT.setTextColor(ILI9341_WHITE);
+  
+  
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Done Displaying Splash Screen."));
 }
 
-void displayErrMessage(String message, bool hang){
+void displayErrMessage(const char* message, const bool hang){
   
   //TFT.fillScreen(ILI9341_BLACK);
   
@@ -112,6 +151,12 @@ void displayErrMessage(String message, bool hang){
   if(hang){
     while(1);
   }
+}
+
+
+void displayErrMessage(const __FlashStringHelper * message, const bool hang){
+  const char* line = (const char PROGMEM *)message;
+  displayErrMessage(line, hang);
 }
 
 

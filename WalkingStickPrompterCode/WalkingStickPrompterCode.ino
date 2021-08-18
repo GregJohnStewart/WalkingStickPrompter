@@ -30,22 +30,13 @@ void setup() {
   }
   writeSerialLine(F("\n\n\nBegin Setup..."));
   CUR_TAB_LEVEL++;
+  
+  delay(5000);
 
   setupButtons();
 
   writeSerialLine(F("Done Setting up Buttons."));
   
-  //debugging
-  
-  //setupUseTFT();
-  
-  //setupUseSD();
-  //setupSD();
-  
-  //return;
-  
-  
-
   //setup TFT display, display something simple
   setupTft();
 
@@ -86,8 +77,13 @@ void setup() {
 */
 void loop() {
 
-  selectFile();
+  char * fileChosen = selectFile();
+  
+  writeSerial(F("Chose file: "));
+  writeSerialLine(fileChosen);
   outFreeRam();
+  
+  delete[] fileChosen;
   /* Button pressing *
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);

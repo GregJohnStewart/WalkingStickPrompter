@@ -9,8 +9,9 @@
 class MenuEntry {
 private:
     int id;
-    String label;
+    char* label;
     MenuEntry* parent;
+    bool clearDataOnDestruct = true;
     Array<MenuEntry, MAX_NUM_MENU_ENTRIES>* subEntries;
 
 public:
@@ -21,13 +22,19 @@ public:
     /**
      *  For basic menu entries
      */
-    MenuEntry(int idIn, String labelIn);
+    MenuEntry(int idIn, char* labelIn, bool clearDataOnDestructIn);
     
-    MenuEntry(int idIn, String labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn);
+    MenuEntry(int idIn, char* labelIn);
+    
+    MenuEntry(int idIn, char* labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn, bool clearDataOnDestructIn);
+    
+    MenuEntry(int idIn, char* labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn);
     
     int getId();
     
-    String getLabel();
+    char* getLabel();
+    
+    char* getLabelCopy();
     
     MenuEntry* getParent();
     
@@ -36,6 +43,8 @@ public:
     Array<MenuEntry, MAX_NUM_MENU_ENTRIES>* getSubEntries();
     
     bool hasSubEntries();
+    
+    ~MenuEntry();
 };
 
 #endif
