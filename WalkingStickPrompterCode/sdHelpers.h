@@ -4,9 +4,26 @@
 #include "globals.h"
 #include "tftSdModuleHelpers.h"
 #include "SD.h"
+#include <LinkedList.h>
 
 
-const int getNumFilesInDir(char* dirLoc){
+const char validFile(File* file){
+  if(!*file){
+    return -1;
+  }
+  if(file->name()[0] == "."){
+    return 0;
+  }
+  if(file->isDirectory()) {
+    return 0;
+  }
+  //TODO:: only allow .txt
+
+  
+  return 1;
+}
+
+const int getNumFilesInDir(const char* dirLoc){
   writeSerial(F("Getting number of files in "));
   writeSerialLine(dirLoc);
   CUR_TAB_LEVEL++;
@@ -16,28 +33,31 @@ const int getNumFilesInDir(char* dirLoc){
   File curEntry;
     do {
       curEntry = dir.openNextFile();
-      if(!curEntry){
+      const char testResult = validFile(&curEntry);
+      if(testResult == -1){
+        curEntry.close();
         break;
       }
-      if(curEntry.name()[0] == "."){
+      if(!testResult){
+        curEntry.close();
         continue;
       }
-      if (curEntry.isDirectory()) {
-        continue;
-      }
-      writeSerialLine(curEntry.name());
+      writeSerial(false, true, F("\""));
+      writeSerial(false, false, curEntry.name());
+      writeSerial(true, false, F("\""));
       i++;
+      curEntry.close();
     }while(true);
   dir.close();
   
   CUR_TAB_LEVEL--;
-  writeSerial(F("Done ("));
+  writeSerial(false, true, F("Done ("));
   writeSerial(i);
-  writeSerialLine(F(")"));
+  writeSerial(true, false, F(")"));
   return i;
 }
 
-const char* selectFile(){
+const String selectFile(){
   writeSerialLine(F("Selecting file..."));
   CUR_TAB_LEVEL++;
   //inline SdVolume volume;
@@ -47,9 +67,10 @@ const char* selectFile(){
   //TODO:: pass to MenuEntries Selector to get entry
   //TODO:: return file
   
-  const char* dir = (const char PROGMEM *)F("/");
+  const char* dir = "/";
   const int numFiles = getNumFilesInDir(dir);
-  MenuEntry* entries = new MenuEntry[numFiles];
+  LinkedList<MenuEntry*> entries = LinkedList<MenuEntry*>();
+  
   writeSerialLine(F("created arr of entries"));
   File root = SD.open(dir);
   writeSerialLine(F("Opened root"));
@@ -61,31 +82,44 @@ const char* selectFile(){
     File curEntry;
     do {
       curEntry = root.openNextFile();
-      if(!curEntry){
+      const char testResult = validFile(&curEntry);
+      if(testResult == -1){
+        curEntry.close();
         break;
       }
-      if(curEntry.name()[0] == "."){
+      if(!testResult){
+        curEntry.close();
         continue;
       }
-      if (curEntry.isDirectory()) {
-        continue;
-      }
+      
+      const char* curEntryName = curEntry.name();
+      writeSerial(false, true, F("\""));
+      writeSerial(false, false, curEntryName);
+      writeSerial(false, false, F("\" - "));
+      String labelStrIn = String(curEntryName);
+      MenuEntry* curMenuEntry = new MenuEntry(i, labelStrIn);
+      entries.add(curMenuEntry);
       writeSerial(i);
-      writeSerial(F(" "));
-      writeSerial(curEntry.name());
-      entries[i] = MenuEntry(i, curEntry.name());
+      writeSerial(false, false, F(" "));
+      
+      String labelStr = entries.get(i)->getLabelStr();
+      writeSerial(false, false, F("\""));
+      writeSerial(false, false, labelStr.c_str());
+      writeSerial(true, false, F("\""));
       i++;
+      curEntry.close();
     }while(true);
   }
   root.close();
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
   
-  MenuEntry selected = selectEntry(F("Select a file:"), entries, numFiles);
+  MenuEntry* selected = selectEntry(F("Select a file:"), &entries);
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
-  return selected.getLabelCopy();
+  
+  return selected->getLabelStr();
 }
 
 

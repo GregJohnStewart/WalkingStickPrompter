@@ -3,63 +3,35 @@
 MenuEntry::MenuEntry(){
 }
 
-MenuEntry::MenuEntry(int idIn, char* labelIn, bool clearDataOnDestructIn){
+MenuEntry::MenuEntry(int idIn, const String labelIn){
     id = idIn;
-    label = labelIn;
-    parent = NULL;
-    subEntries = NULL;
-    clearDataOnDestruct = clearDataOnDestructIn;
+    labelStr = labelIn;
+    flash = false;
+}
+ 
+MenuEntry::MenuEntry(int idIn, const __FlashStringHelper * labelIn){
+    id = idIn;
+    labelPointer = labelIn;
+    flash = true;
 }
 
 
-MenuEntry::MenuEntry(int idIn, char* labelIn){
-    MenuEntry(idIn, labelIn, clearDataOnDestruct);
-}
-    
-MenuEntry::MenuEntry(int idIn, char* labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn, bool clearDataOnDestructIn){
-    MenuEntry(idIn, labelIn, clearDataOnDestructIn);
-}
-    
-MenuEntry::MenuEntry(int idIn, char* labelIn, Array<MenuEntry, MAX_NUM_MENU_ENTRIES> &subEntriesIn){
-    MenuEntry(idIn, labelIn);
-}
-    
 int MenuEntry::getId(){
     return id;
 }
-    
-char* MenuEntry::getLabel(){
-    return label;
+
+bool MenuEntry::isFlash(){
+    return flash;
+}
+
+const String MenuEntry::getLabelStr(){
+    return labelStr;
 }
     
-char* MenuEntry::getLabelCopy(){
-    char* labelCpy = new char[sizeof(label)];
-    strcpy(labelCpy, label);
-    return labelCpy;
-}
-    
-MenuEntry* MenuEntry::getParent(){
-    return parent;
-}
-    
-bool MenuEntry::hasParent(){
-    return getParent() != NULL;
-}
-    
-Array<MenuEntry, MAX_NUM_MENU_ENTRIES>* MenuEntry::getSubEntries(){
-    return subEntries;
-}
-    
-bool MenuEntry::hasSubEntries(){
-    return getSubEntries() != NULL;
+const __FlashStringHelper* MenuEntry::getLabelFlash(){
+    return labelPointer;
 }
 
 MenuEntry::~MenuEntry(){
-    if(!clearDataOnDestruct){
-    	return;
-    }
-    delete[] label;
-    if(subEntries != NULL){
-    	//todo:: iterate through sub entries, delete
-    }
+    
 }

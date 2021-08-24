@@ -40,65 +40,81 @@ int freeRam () {
   return (int) &v - (__brkval == 0 ? (int) &__heap_start : (int) __brkval); 
 }
 
-const char* getTabs(const int numTabs){
-  char* tabs = new char[numTabs + 1];
-
-  for(int i = 0; i < numTabs; i++){
-    tabs[i] = "\t";
-  }
-  tabs[numTabs] = "\0";
-  
-  return tabs;
+void printTabs(){
+  for (byte i=0; i< CUR_TAB_LEVEL; i++) Serial.print(F("\t"));
 }
 
-void writeSerial(bool newline, const char* line){
+void writeSerial(bool newline, bool doPrintTabs, const char* line){
   if(!SERIAL_LOGS_ENABLED){
     return;
   }
-  const char* tabs = getTabs(CUR_TAB_LEVEL);
   
-  Serial.print(tabs);
+  if(doPrintTabs){
+    printTabs();
+  }
   if(newline){
     Serial.println(line);
   } else {
     Serial.print(line);
   }
-  delete[] tabs;
+}
+
+void writeSerial(bool newline, bool doPrintTabs, const __FlashStringHelper * line){
+  if(!SERIAL_LOGS_ENABLED){
+    return;
+  }
+  
+  if(doPrintTabs){
+    printTabs();
+  }
+  if(newline){
+    Serial.println(line);
+  } else {
+    Serial.print(line);
+  }
 }
 
 void writeSerial(const char* line){
-  writeSerial(false, line);
+  writeSerial(false, true, line);
 }
 
 void writeSerialLine(const char* line){
-  writeSerial(true, line);
+  writeSerial(true, true, line);
 }
 
 void writeSerial(const __FlashStringHelper * ifsh){
-  const char* PROGMEM line = (const char PROGMEM *)ifsh;
-  writeSerial(false, line);
+  writeSerial(false, true, ifsh);
 }
 
 void writeSerialLine(const __FlashStringHelper * ifsh){
-  const char* PROGMEM line = (const char PROGMEM *)ifsh;
-  writeSerial(true, line);
+  writeSerial(true, true, ifsh);
 }
 
 void writeSerialLine(const int num){
   char s[9];
   snprintf(s, sizeof(s), "%i", num);
-  writeSerial(true, s);
+  writeSerial(true, false, s);
 }
+
 
 void writeSerial(int num){
   char s[9];
   snprintf(s, sizeof(s), "%i", num);
-  writeSerial(false, s);
+  writeSerial(false, false, s);
 }
 
 void outFreeRam(){
   writeSerial(F("Free ram: "));
   writeSerialLine(freeRam());
+}
+
+const char * CF(const __FlashStringHelper * line){
+  size_t len = strlen_PF(line);
+  writeSerial(F("size of string in flash: "));
+  writeSerialLine(len);
+  char* output = new char[len];
+  strncpy_PF(output, line, len);
+  return output;
 }
 
 void displaySplashScreen(){
@@ -141,8 +157,7 @@ void displaySplashScreen(){
 
 void displayErrMessage(const char* message, const bool hang){
   
-  //TFT.fillScreen(ILI9341_BLACK);
-  
+  TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_RED);
   TFT.setTextSize(3);
@@ -155,8 +170,15 @@ void displayErrMessage(const char* message, const bool hang){
 
 
 void displayErrMessage(const __FlashStringHelper * message, const bool hang){
-  const char* line = (const char PROGMEM *)message;
-  displayErrMessage(line, hang);
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.setCursor(0, 0);
+  TFT.setTextColor(ILI9341_RED);
+  TFT.setTextSize(3);
+  TFT.println(message);
+  
+  if(hang){
+    while(1);
+  }
 }
 
 

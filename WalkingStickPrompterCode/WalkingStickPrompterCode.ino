@@ -28,10 +28,9 @@ void setup() {
   if(!Serial){
     SERIAL_LOGS_ENABLED = false;
   }
+  
   writeSerialLine(F("\n\n\nBegin Setup..."));
   CUR_TAB_LEVEL++;
-  
-  delay(5000);
 
   setupButtons();
 
@@ -77,13 +76,12 @@ void setup() {
 */
 void loop() {
 
-  char * fileChosen = selectFile();
+  const String fileChosen = selectFile();
   
   writeSerial(F("Chose file: "));
-  writeSerialLine(fileChosen);
+  writeSerialLine(fileChosen.c_str());
   outFreeRam();
   
-  delete[] fileChosen;
   /* Button pressing *
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);

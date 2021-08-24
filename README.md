@@ -43,6 +43,7 @@ The SD card has several "gotcha's":
       - [Adafruit BusIO Library](https://github.com/adafruit/Adafruit_BusIO)
       - [AdaFruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
       - [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341)
+      - [LinkedList](https://github.com/ivanseidel/LinkedList)
 
 ### Circuitry
 

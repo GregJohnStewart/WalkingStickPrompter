@@ -2,19 +2,17 @@
 #define MENU_ENTRY_HELPERS_H
 
 #include "screenSizeHelpers.h"
+#include <LinkedList.h>
 
-char* getSep(int fontSize){
+void printSepToTFT(int fontSize){
   int numCols = getNumCols(fontSize);
-  char* output = new char[numCols + 1];
-  
   for(int i = 0; i < numCols; i++){
-    output[i] = F("-");
+    TFT.print(F("-"));
   }
-  return output;
 }
 
 
-void drawMenu(char* title, MenuEntry entries[], int numEntries, int selected){
+void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries, int numEntries, int selected){
   writeSerialLine(F("Drawing Menu..."));
   CUR_TAB_LEVEL++;
 
@@ -23,19 +21,24 @@ void drawMenu(char* title, MenuEntry entries[], int numEntries, int selected){
   TFT.setTextColor(ILI9341_WHITE);
   TFT.setTextSize(MENU_FONT_SIZE);
   TFT.println(title);
-  TFT.println(getSep(MENU_FONT_SIZE));
+  printSepToTFT(MENU_FONT_SIZE);
   
   for(int i = 0; i < numEntries; i++){
     if(i == selected){
       TFT.setTextColor(ILI9341_BLACK, ILI9341_WHITE);
     }
   
-    writeSerial(entries[i].getId());
-    writeSerial(" ");
-    writeSerialLine(entries[i].getLabel());
+//    writeSerial(entries[i].getId());
+//    writeSerial(F(" "));
+//    writeSerialLine(entries[i].getLabel());
+    MenuEntry* curEntry = entries->get(i);
     
     
-    TFT.println(entries[i].getLabel());
+    if(curEntry->isFlash()){
+      TFT.println(curEntry->getLabelFlash());
+    } else {
+      TFT.println(curEntry->getLabelStr());
+    }
     
     if(i == selected){
       TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
@@ -46,12 +49,13 @@ void drawMenu(char* title, MenuEntry entries[], int numEntries, int selected){
   writeSerialLine(F("Done Drawing Menu."));
 }
 
-MenuEntry selectEntry(char* title, MenuEntry entries[], int numEntries){
+MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries){
   writeSerialLine(F("Selecting entry..."));
   CUR_TAB_LEVEL++;
   
   int curSelection = 0;
   int buttonPressed = -1;
+  int numEntries = entries->size();
   
   do{
     drawMenu(title, entries, numEntries, curSelection);
@@ -81,11 +85,9 @@ MenuEntry selectEntry(char* title, MenuEntry entries[], int numEntries){
   writeSerial(curSelection);
   writeSerialLine(F(")"));
   
-  return entries[curSelection];
-}
-
-MenuEntry selectEntry(const __FlashStringHelper * title, MenuEntry entries[], int numEntries){
-    return selectEntry((const char PROGMEM *)title, entries, numEntries);
+  
+  
+  return entries->get(curSelection);
 }
 
 #endif
