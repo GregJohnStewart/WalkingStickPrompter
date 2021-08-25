@@ -23,6 +23,7 @@ const char validFile(File* file){
   return 1;
 }
 
+/*
 const int getNumFilesInDir(const char* dirLoc){
   writeSerial(F("Getting number of files in "));
   writeSerialLine(dirLoc);
@@ -56,6 +57,7 @@ const int getNumFilesInDir(const char* dirLoc){
   writeSerial(true, false, F(")"));
   return i;
 }
+*/
 
 const String selectFile(){
   writeSerialLine(F("Selecting file..."));
@@ -68,7 +70,7 @@ const String selectFile(){
   //TODO:: return file
   
   const char* dir = "/";
-  const int numFiles = getNumFilesInDir(dir);
+  //const int numFiles = getNumFilesInDir(dir);
   LinkedList<MenuEntry*> entries = LinkedList<MenuEntry*>();
   
   writeSerialLine(F("created arr of entries"));
@@ -115,16 +117,19 @@ const String selectFile(){
   writeSerialLine(F("DONE."));
   
   MenuEntry* selected = selectEntry(F("Select a file:"), &entries);
-  String output = selected->getLabelStr();
   
+  String output;
+  if(selected == NULL){
+    output = F("");
+  } else {
+    output = selected->getLabelStr();
+  }
   
-  //TODO:: clean up all menu entries, strings except for chosen string
+  //clean up all menu entries, strings except for chosen string
   while(entries.size() > 0){
     MenuEntry* cur = entries.shift();
     delete cur;
   }
-  
-  
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));

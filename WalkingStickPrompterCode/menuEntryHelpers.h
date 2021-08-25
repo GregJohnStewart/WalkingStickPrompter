@@ -11,7 +11,6 @@ void printSepToTFT(int fontSize){
   }
 }
 
-
 void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries, int numEntries, int selected){
   writeSerialLine(F("Drawing Menu..."));
   CUR_TAB_LEVEL++;
@@ -59,6 +58,7 @@ MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>
   int numEntries = entries->size();
   
   do{
+    //TODO:: handle longer lists of entries
     drawMenu(title, entries, numEntries, curSelection);
   
     buttonPressed = waitForButtonPress();
@@ -79,16 +79,18 @@ MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>
     }
   }while(buttonPressed != SELECT_BUTTON && buttonPressed != BACK_BUTTON);
   
-  //TODO:: handle back button 
-  
   CUR_TAB_LEVEL--;
-  writeSerial(F("DONE Selecting entry ("));
-  writeSerial(curSelection);
-  writeSerialLine(F(")"));
+  writeSerial(F("DONE Selecting entry: "));
   
+  MenuEntry* output = NULL;
+  if(buttonPressed == BACK_BUTTON){
+    writeSerial(true, false, F("<none>"));
+  } else {
+    output = entries->get(curSelection);
+    writeSerial(curSelection);
+  }
   
-  
-  return entries->get(curSelection);
+  return output;
 }
 
 #endif

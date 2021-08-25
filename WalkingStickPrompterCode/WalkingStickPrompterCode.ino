@@ -81,25 +81,17 @@ void loop() {
   outFreeRam();
 
   const String fileChosen = selectFile();
-  
-  writeSerial(F("Chose file: "));
-  writeSerialLine(fileChosen.c_str());
   outFreeRam();
   
-  /* Button pressing *
-  TFT.fillScreen(ILI9341_BLACK);
-  TFT.setCursor(0, 0);
-  TFT.print("Waiting for button press...");
+  if(fileChosen.length() > 0){
+    writeSerial(F("Chose file: "));
+    writeSerialLine(fileChosen.c_str());
+    //TODO:: start showing file
+  } else {
+    //TODO:: open options
+  }
   
-  temp = waitForButtonPress();
-  
-  TFT.setCursor(0, 0);
-  TFT.fillScreen(ILI9341_BLACK);
-  TFT.print(String(temp) + " Was Pressed!");
-  delay(2000);
-  /* */
-  
-  
+  outFreeRam();
   CUR_TAB_LEVEL--;
   writeSerialLine(F("END program cycle."));
 }
