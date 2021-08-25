@@ -18,7 +18,7 @@ public:
     /**
      *  don't use, for handling arrays of MenuEntries
      */
-    MenuEntry();
+    //MenuEntry();
     
     MenuEntry(int idIn, const String labelIn);
     

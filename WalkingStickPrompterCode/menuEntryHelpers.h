@@ -52,6 +52,7 @@ void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries
 MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries){
   writeSerialLine(F("Selecting entry..."));
   CUR_TAB_LEVEL++;
+  outFreeRam();
   
   int curSelection = 0;
   int buttonPressed = -1;

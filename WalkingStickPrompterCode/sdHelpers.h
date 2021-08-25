@@ -18,7 +18,7 @@ const char validFile(File* file){
     return 0;
   }
   //TODO:: only allow .txt
-
+  
   
   return 1;
 }
@@ -115,11 +115,21 @@ const String selectFile(){
   writeSerialLine(F("DONE."));
   
   MenuEntry* selected = selectEntry(F("Select a file:"), &entries);
+  String output = selected->getLabelStr();
+  
+  
+  //TODO:: clean up all menu entries, strings except for chosen string
+  while(entries.size() > 0){
+    MenuEntry* cur = entries.shift();
+    delete cur;
+  }
+  
+  
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
   
-  return selected->getLabelStr();
+  return output;
 }
 
 

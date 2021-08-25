@@ -48,10 +48,11 @@ void setup() {
 
   // done with setup
   turnStatusLightOff();
+  
+  outFreeRam();
 
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Setup Complete."));
-  outFreeRam();
   delay(1000);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
@@ -75,6 +76,9 @@ void setup() {
     4. Done
 */
 void loop() {
+  writeSerialLine(F("START program cycle"));
+  CUR_TAB_LEVEL++;
+  outFreeRam();
 
   const String fileChosen = selectFile();
   
@@ -96,10 +100,8 @@ void loop() {
   /* */
   
   
-  
-  
-  
-  
+  CUR_TAB_LEVEL--;
+  writeSerialLine(F("END program cycle."));
 }
 
 

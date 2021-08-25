@@ -31,7 +31,6 @@ The SD card has several "gotcha's":
 - [Adafruit Graphics Primitives](https://learn.adafruit.com/adafruit-gfx-graphics-library/graphics-primitives)
 - Adafruit SD examples in the IDE
 - https://cpp4arduino.com/2020/02/07/how-to-format-strings-without-the-string-class.html
-- 
 
 ### Environment Setup
 
@@ -44,6 +43,7 @@ The SD card has several "gotcha's":
       - [AdaFruit GFX Library](https://github.com/adafruit/Adafruit-GFX-Library)
       - [Adafruit ILI9341 Library](https://github.com/adafruit/Adafruit_ILI9341)
       - [LinkedList](https://github.com/ivanseidel/LinkedList)
+        - I needed to delete the `test.cpp` file in the library's directory for it to work.
 
 ### Circuitry
 

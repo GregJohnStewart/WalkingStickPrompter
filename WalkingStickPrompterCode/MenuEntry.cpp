@@ -1,7 +1,7 @@
 #include "MenuEntry.h"
 
-MenuEntry::MenuEntry(){
-}
+//MenuEntry::MenuEntry(){
+//}
 
 MenuEntry::MenuEntry(int idIn, const String labelIn){
     id = idIn;
