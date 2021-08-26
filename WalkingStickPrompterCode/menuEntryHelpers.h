@@ -87,7 +87,7 @@ MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>
     writeSerial(true, false, F("<none>"));
   } else {
     output = entries->get(curSelection);
-    writeSerial(curSelection);
+    writeSerialLine(curSelection);
   }
   
   return output;

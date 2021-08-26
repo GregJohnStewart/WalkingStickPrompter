@@ -1,7 +1,6 @@
 #ifndef MENU_ENTRY_H
 #define MENU_ENTRY_H
 
-#include <Array.h>
 #include "globals.h"
 
 //typedef Array<MenuEntry*, 10> MenuEntries;

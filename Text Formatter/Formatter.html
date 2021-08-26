@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>File Formatter for WalkingStickPrompter</title>
+  <style>
+  textarea {
+      width: 100%;
+      min-width:100%;
+      min-height:200px;
+  }
+  </style>
+</head>
+<body>
+  <h1>
+  File Formatter for WalkingStickPrompter
+  </h1>
+  <a href="https://github.com/GregJohnStewart/WalkingStickPrompter"></a>
+  <p>
+    This tool takes a file and formats it for use in the Walking Stick Prompter. Since the microcontroller that runs it is limited, we need to pre format.
+  </p>
+  <hr />
+  
+  <h3>Choose a file:</h3>
+  <input type="file" id="fileInput" accept=".txt" />
+  
+  <hr />
+  <h3>Input Text:</h3>
+  <p>(Tweak this to get the output right!)</p>
+  <textarea id="initialInput"></textarea>
+  <hr />
+  <h3>Output:</h3>
+  <textarea id="output"></textarea>
+  
+  
+  <script>
+    var fileInput = document.getElementById('fileInput');
+    var initialInput = document.getElementById('initialInput');
+    var output = document.getElementById('output');
+    
+    
+    const streamToText = async (blob) => {
+      const readableStream = await blob.getReader();
+      const chunk = await readableStream.read();
+
+      return new TextDecoder('utf-8').decode(chunk.value);
+    };
+
+    const bufferToText = (buffer) => {
+      const bufferByteLength = buffer.byteLength;
+      const bufferUint8Array = new Uint8Array(buffer, 0, bufferByteLength);
+
+      return new TextDecoder().decode(bufferUint8Array);
+    };
+
+    fileInput.addEventListener('change', function(e) {
+      let file = fileInput.files[0];
+
+      (async () => {
+        const fileContent = await file.text();
+        
+        initialInput.value = fileContent;
+        
+        // output.dispatchEvent(new Event('change'));
+        
+        if ("createEvent" in document) {
+          var evt = document.createEvent("HTMLEvents");
+          evt.initEvent("change", false, true);
+          initialInput.dispatchEvent(evt);
+        } else {
+          initialInput.fireEvent("onchange");
+        }
+
+        console.log("Read in file contents");
+      })();
+    });
+
+    initialInput.addEventListener('change', function(e) {
+      let content = initialInput.value
+      
+      //TODO:: reformat content
+      
+      output.value = content;
+      
+      console.log("Updated output.");
+    });
+
+/*
+    document.getElementById('foo').addEventListener('change', function(e) {
+      let file = document.getElementById('input').files[0];
+
+      (async () => {
+        const fileContent = await file.text();
+
+        console.log('.text()', fileContent);
+
+        const fileContentStream = await file.stream();
+
+        console.log('.stream()', await streamToText(fileContentStream));
+
+        const buffer = await file.arrayBuffer();
+
+        console.log('.buffer()', bufferToText(buffer));
+
+        const fileSliceBlob = file.slice(0, file.length);
+        const fileSliceBlobStream = await fileSliceBlob.stream();
+
+        console.log('.slice() and .stream()', await streamToText(fileSliceBlobStream));
+        
+        document.getElementById('output').value = fileContent;
+      })();
+    });
+    */
+  </script>
+</body>
+</html>

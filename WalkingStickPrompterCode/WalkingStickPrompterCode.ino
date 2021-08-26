@@ -86,7 +86,8 @@ void loop() {
   if(fileChosen.length() > 0){
     writeSerial(F("Chose file: "));
     writeSerialLine(fileChosen.c_str());
-    //TODO:: start showing file
+    
+    readFileContent(fileChosen);
   } else {
     //TODO:: open options
   }

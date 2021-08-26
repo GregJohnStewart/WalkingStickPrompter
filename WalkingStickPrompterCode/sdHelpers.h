@@ -23,42 +23,6 @@ const char validFile(File* file){
   return 1;
 }
 
-/*
-const int getNumFilesInDir(const char* dirLoc){
-  writeSerial(F("Getting number of files in "));
-  writeSerialLine(dirLoc);
-  CUR_TAB_LEVEL++;
-  
-  File dir = SD.open(dirLoc);
-  int i = 0;
-  File curEntry;
-    do {
-      curEntry = dir.openNextFile();
-      const char testResult = validFile(&curEntry);
-      if(testResult == -1){
-        curEntry.close();
-        break;
-      }
-      if(!testResult){
-        curEntry.close();
-        continue;
-      }
-      writeSerial(false, true, F("\""));
-      writeSerial(false, false, curEntry.name());
-      writeSerial(true, false, F("\""));
-      i++;
-      curEntry.close();
-    }while(true);
-  dir.close();
-  
-  CUR_TAB_LEVEL--;
-  writeSerial(false, true, F("Done ("));
-  writeSerial(i);
-  writeSerial(true, false, F(")"));
-  return i;
-}
-*/
-
 const String selectFile(){
   writeSerialLine(F("Selecting file..."));
   CUR_TAB_LEVEL++;
@@ -134,7 +98,7 @@ const String selectFile(){
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
   
-  return output;
+  return dir + output;
 }
 
 
@@ -163,6 +127,111 @@ void setupSD(){
   
   CUR_TAB_LEVEL--;
   writeSerialLine(F("Done Setting up SD."));
+}
+
+void writeOptions(){
+  writeSerialLine(F("Writing options to sd..."));
+  CUR_TAB_LEVEL++;
+  
+  File opsFile = SD.open(OPTIONS_FILE, FILE_WRITE);
+  
+  if(!opsFile){
+    writeSerialLine(F("Options file could not be opened for writing!"));
+  } else {
+    opsFile.write((char*)&OPTIONS, sizeof(OPTIONS));
+    opsFile.close();
+  }
+  
+  CUR_TAB_LEVEL--;
+  writeSerialLine(F("Done."));
+}
+
+void readOptions(){
+  writeSerialLine(F("Reading options from sd..."));
+  CUR_TAB_LEVEL++;
+  
+  File opsFile = SD.open(OPTIONS_FILE, FILE_READ);
+  
+  if(!opsFile){
+    writeSerialLine(F("Options file not present. Nothing to read in."));
+    writeOptions();
+  } else {
+    opsFile.read((char*)&OPTIONS, sizeof(OPTIONS));
+    opsFile.close();
+  }
+  
+  CUR_TAB_LEVEL--;
+  writeSerialLine(F("Done."));
+}
+
+void readInContentPage(File file, const unsigned long curFileIndex, char * contentBuffer, const int bufferSize){
+  file.seek(curFileIndex);
+  
+  const int numRead = file.read(contentBuffer, bufferSize);
+  
+  if(numRead == -1){
+    displayErrMessage(F("Error reading file."), true);
+  }
+  
+  contentBuffer[numRead] = '\0';
+}
+
+void readFileContent(String location){
+  writeSerialLine(F("Reading file content to user."));
+  CUR_TAB_LEVEL++;
+  
+  File file = SD.open(location, FILE_READ);
+  if(!file){
+    displayErrMessage(F("Unable to open\nfile for reading."), true);
+  }
+  
+  const int numCharsToShow = getNumChars(OPTIONS.readingFontSize);
+  const unsigned long fileSize = file.size();
+  unsigned long curFileIndex = 0;
+  unsigned long indexUpperBound = ((fileSize < numCharsToShow) ? 0 : (fileSize - (numCharsToShow/2)));
+  char contentBuffer[numCharsToShow + 1];
+  unsigned int buttonPressed = 0;
+  
+  
+  contentBuffer[numCharsToShow] = '\0';//set null terminator, should never be touched when content gets read in
+  writeSerial(F("Num chars on screen: "));
+  writeSerialLine(numCharsToShow);
+  outFreeRam();
+  
+  TFT.setTextColor(OPTIONS.readingFontColor);
+  TFT.setTextSize(OPTIONS.readingFontSize);
+  
+  do{
+    readInContentPage(file, curFileIndex, contentBuffer, numCharsToShow);
+    
+    TFT.fillScreen(ILI9341_BLACK);
+    TFT.setCursor(0, 0);
+    TFT.print(contentBuffer);
+    
+    do{//only allow button press for back, up, and down
+      buttonPressed = waitForButtonPress();
+    } while(buttonPressed != BACK_BUTTON && buttonPressed != UP_BUTTON && buttonPressed != DOWN_BUTTON);
+    
+    if(buttonPressed == UP_BUTTON){
+      if(curFileIndex <= numCharsToShow){
+        curFileIndex = 0;
+      } else {
+        curFileIndex -= numCharsToShow;
+      }
+    } else if(buttonPressed == DOWN_BUTTON){
+      curFileIndex += numCharsToShow;
+      
+      if(curFileIndex > indexUpperBound){
+        curFileIndex = indexUpperBound;
+      }
+    }
+  } while(buttonPressed != BACK_BUTTON);
+  
+  file.close();
+  
+  
+  CUR_TAB_LEVEL--;
+  writeSerialLine(F("Done."));
 }
 
 #endif

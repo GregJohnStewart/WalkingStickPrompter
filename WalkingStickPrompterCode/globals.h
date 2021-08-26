@@ -11,6 +11,7 @@
 #include "Adafruit_GFX.h"
 #include "Adafruit_ILI9341.h"
 #include <SD.h>
+#include "Options.h"
 
 /*
  * Basics
@@ -89,5 +90,12 @@ inline int MENU_FONT_SIZE = 2;
  * Globals for SD
  */
 inline const int SD_CS = 5;
+
+/*
+ * Options
+ */
+inline Options OPTIONS = Options();
+inline char OPTIONS_FILE[9] = ".ops.dat";
+
 
 #endif
