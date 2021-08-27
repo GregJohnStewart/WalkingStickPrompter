@@ -156,7 +156,7 @@ void displaySplashScreen(){
 }
 
 void displayErrMessage(const char* message, const bool hang){
-  
+  writeSerialLine(message);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_RED);
@@ -170,6 +170,7 @@ void displayErrMessage(const char* message, const bool hang){
 
 
 void displayErrMessage(const __FlashStringHelper * message, const bool hang){
+  writeSerialLine(message);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_RED);

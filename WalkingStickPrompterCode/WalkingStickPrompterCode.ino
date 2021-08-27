@@ -13,6 +13,7 @@
 #include "sdHelpers.h"
 #include "tftSdModuleHelpers.h"
 #include "screenSizeHelpers.h"
+#include "optionsHelpers.h"
 
 int temp = 1;
 
@@ -42,6 +43,9 @@ void setup() {
 
   //setup SD card info
   setupSD();
+  
+  //read options in
+  readOptions();
 
   //display basic infos
   displaySplashScreen();
@@ -89,7 +93,7 @@ void loop() {
     
     readFileContent(fileChosen);
   } else {
-    //TODO:: open options
+    doOptions();
   }
   
   outFreeRam();

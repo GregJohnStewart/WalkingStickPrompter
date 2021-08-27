@@ -95,7 +95,7 @@ inline const int SD_CS = 5;
  * Options
  */
 inline Options OPTIONS = Options();
-inline char OPTIONS_FILE[9] = ".ops.dat";
+inline char OPTIONS_FILE[9] = "/ops.dat";
 
 
 #endif

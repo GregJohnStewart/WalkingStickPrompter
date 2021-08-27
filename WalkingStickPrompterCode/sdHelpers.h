@@ -37,9 +37,9 @@ const String selectFile(){
   //const int numFiles = getNumFilesInDir(dir);
   LinkedList<MenuEntry*> entries = LinkedList<MenuEntry*>();
   
-  writeSerialLine(F("created arr of entries"));
+  //writeSerialLine(F("created arr of entries"));
   File root = SD.open(dir);
-  writeSerialLine(F("Opened root"));
+  //writeSerialLine(F("Opened root"));
   
   writeSerialLine(F("Getting File List"));
   CUR_TAB_LEVEL++;
@@ -59,17 +59,17 @@ const String selectFile(){
       }
       
       const char* curEntryName = curEntry.name();
-      writeSerial(false, true, F("\""));
-      writeSerial(false, false, curEntryName);
-      writeSerial(false, false, F("\" - "));
+      //writeSerial(false, true, F("\""));
+      //writeSerial(false, false, curEntryName);
+      //writeSerial(false, false, F("\" - "));
       String labelStrIn = String(curEntryName);
       MenuEntry* curMenuEntry = new MenuEntry(i, labelStrIn);
       entries.add(curMenuEntry);
-      writeSerial(i);
-      writeSerial(false, false, F(" "));
+      //writeSerial(i);
+      //writeSerial(false, false, F(" "));
       
       String labelStr = entries.get(i)->getLabelStr();
-      writeSerial(false, false, F("\""));
+      writeSerial(false, true, F("\""));
       writeSerial(false, false, labelStr.c_str());
       writeSerial(true, false, F("\""));
       i++;
@@ -98,7 +98,11 @@ const String selectFile(){
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
   
+  if(selected == NULL){
+    return output;
+  }
   return dir + output;
+  
 }
 
 
@@ -133,13 +137,17 @@ void writeOptions(){
   writeSerialLine(F("Writing options to sd..."));
   CUR_TAB_LEVEL++;
   
-  File opsFile = SD.open(OPTIONS_FILE, FILE_WRITE);
+  File opsFile = SD.open(OPTIONS_FILE, FILE_WRITE | O_TRUNC);
   
   if(!opsFile){
-    writeSerialLine(F("Options file could not be opened for writing!"));
+    displayErrMessage(F("Options file\ncould not be\nopened for\nwriting!"), true);
   } else {
-    opsFile.write((char*)&OPTIONS, sizeof(OPTIONS));
+    size_t returned = opsFile.write((char*)&OPTIONS, sizeof(OPTIONS));
     opsFile.close();
+    
+    if(returned == 0 || returned != sizeof(OPTIONS)){
+      displayErrMessage(F("Options file\ncould not be\nwritten!"), true);
+    }
   }
   
   CUR_TAB_LEVEL--;

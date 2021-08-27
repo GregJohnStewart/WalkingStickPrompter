@@ -12,8 +12,8 @@ void printSepToTFT(int fontSize){
 }
 
 void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries, int numEntries, int selected){
-  writeSerialLine(F("Drawing Menu..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Drawing Menu..."));
+  //CUR_TAB_LEVEL++;
 
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
@@ -44,8 +44,8 @@ void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries
     }
   }
   
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done Drawing Menu."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(F("Done."));
 }
 
 MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries){
