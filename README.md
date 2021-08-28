@@ -13,7 +13,14 @@ The SD card has several "gotcha's":
 - Must be formatted as FAT
 - Directories currently not supported; TODO in the future to support
 - Keep the SD relatively clean, not too many files. For file selection need all the file names read in and there isn't a ton or RAM to go around!
-- File names can only be 8 characters long, or will be shortened artificially in the display. Unfortunately, with the tech used there isn't a way around this.
+- File names:
+  - can only be 8 characters long, or will be shortened artificially in the display. Unfortunately, with the tech used there isn't a way around this.
+  - sometimes a file can get weird, and fail to read. try renaming it.
+
+Resources:
+
+- https://www.arduino.cc/en/Reference/SDCardNotes
+- 
 
 ## Build Documentation
 

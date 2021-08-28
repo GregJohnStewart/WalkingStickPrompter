@@ -159,13 +159,13 @@ void writeOptions(){
 }
 
 void readOptions(){
-  writeSerialLine(F("Reading options from sd..."));
+  writeSerialLine(F("Reading ops from sd..."));
   CUR_TAB_LEVEL++;
   
   File opsFile = SD.open(OPTIONS_FILE, FILE_READ);
   
   if(!opsFile){
-    writeSerialLine(F("Options file not present. Nothing to read in."));
+    writeSerialLine(F("No ops file."));
     writeOptions();
   } else {
     opsFile.read((char*)&OPTIONS, sizeof(OPTIONS));
@@ -176,13 +176,16 @@ void readOptions(){
   writeSerialLine(F("Done."));
 }
 
+//TODO:: rework to send to TFT from here, read in one line at a time rather than entire screen
 void readInContentPage(File file, const unsigned long curFileIndex, char * contentBuffer, const int bufferSize){
-  file.seek(curFileIndex);
+  if(!file.seek(curFileIndex)){
+    displayErrMessage(F("Error seeking in file."), true);
+  }
   
   const int numRead = file.read(contentBuffer, bufferSize);
   
   if(numRead == -1){
-    displayErrMessage(F("Error reading file."), true);
+    displayErrMessage(F("Error reading\nfile."), true);
   }
   
   contentBuffer[numRead] = '\0';
