@@ -9,10 +9,23 @@
       min-width:100%;
       min-height:200px;
   }
-  #output {
-      width: 100%;
-      min-width:100%;
-      min-height:200px;
+  #outputContainer {
+      
+  }
+  .textView {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+  .outputCell {
+      border: 1px solid;
+      margin: 1px;
+      padding: 0px;
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-wrap: anywhere;
+  }
+  .size2 {/* 15rx26c */
+      font-size: 2em;
+      width: 26em;
   }
   </style>
 </head>
@@ -32,16 +45,26 @@
   <hr />
   <h3>Input Text:</h3>
   <p>(Tweak this to get the output right!)</p>
-  <textarea id="initialInput"></textarea>
+  <textarea id="initialInput" class="textView"></textarea>
   <hr />
   <h3>Output:</h3>
-  <textarea id="output"></textarea>
+  <p>
+  Font size:
+  <select id="sizeOptions">
+    <option data-rows="15" data-cols="26" selected>2</option>
+    <option data-rows="10" data-cols="17">3</option>
+    <option data-rows="7" data-cols="13">4</option>
+    <option data-rows="6" data-cols="10">5</option>
+  </select>
+  </p>
+  <div id="outputContainer"></div>
   
   
   <script>
     var fileInput = document.getElementById('fileInput');
     var initialInput = document.getElementById('initialInput');
-    var output = document.getElementById('output');
+    var sizeOptions = document.getElementById('sizeOptions');
+    var outputContainer = document.getElementById('outputContainer');
     
     
     const streamToText = async (blob) => {
@@ -57,6 +80,40 @@
 
       return new TextDecoder().decode(bufferUint8Array);
     };
+    
+    
+    function updateOutput(){
+      //TODO:: reformat content
+      (async () => {
+          let curClass = "size" + sizeOptions.value
+          let content = initialInput.value
+          
+          content = content.replaceAll("\r", "");
+          
+          //TODO:: parameterize
+          content = content.replaceAll("\n\n", "\\n                          ");
+          //content = content.replaceAll("\n\n", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+          content = content.replaceAll("\n", "");
+          content = content.replaceAll("\\n", "\n");
+      
+          
+          outputContainer.innerHTML = '';
+          
+          
+          //TODO:: chunk data, make a cell for each page
+          let curChunk = document.createElement("div");
+          curChunk.classList.add("textView");
+          curChunk.classList.add("outputCell");
+          curChunk.classList.add(curClass);
+          curChunk.innerHTML = content;
+          
+          
+          
+          outputContainer.appendChild(curChunk);
+      
+          console.log("Updated output.");
+      })();
+    }
 
     fileInput.addEventListener('change', function(e) {
       let file = fileInput.files[0];
@@ -81,13 +138,10 @@
     });
 
     initialInput.addEventListener('change', function(e) {
-      let content = initialInput.value
-      
-      //TODO:: reformat content
-      
-      output.value = content;
-      
-      console.log("Updated output.");
+      updateOutput();
+    });
+    sizeOptions.addEventListener('change', function(e) {
+      updateOutput();
     });
 
 /*

@@ -80,7 +80,7 @@ MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>
   }while(buttonPressed != SELECT_BUTTON && buttonPressed != BACK_BUTTON);
   
   CUR_TAB_LEVEL--;
-  writeSerial(F("DONE Selecting entry: "));
+  writeSerial(F("Done: "));
   
   MenuEntry* output = NULL;
   if(buttonPressed == BACK_BUTTON){

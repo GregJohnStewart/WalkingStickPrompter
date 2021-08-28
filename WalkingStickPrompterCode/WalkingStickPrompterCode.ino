@@ -35,7 +35,7 @@ void setup() {
 
   setupButtons();
 
-  writeSerialLine(F("Done Setting up Buttons."));
+  //writeSerialLine(F("Done Setting up Buttons."));
   
   //setup TFT display, display something simple
   setupTft();

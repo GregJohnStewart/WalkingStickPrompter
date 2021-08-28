@@ -129,7 +129,7 @@ void displaySplashScreen(){
   TFT.println(F("Walking Stick\nPrompter"));
   
   TFT.setTextSize(3);
-  TFT.print(F("Version: "));
+  TFT.print(F("V"));
   
   TFT.setTextColor(ILI9341_YELLOW);
   TFT.println(VERSION);
@@ -152,7 +152,7 @@ void displaySplashScreen(){
   
   
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done Displaying Splash Screen."));
+  writeSerialLine(F("Done."));
 }
 
 void displayErrMessage(const char* message, const bool hang){

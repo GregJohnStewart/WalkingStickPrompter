@@ -17,8 +17,12 @@ const char validFile(File* file){
   if(file->isDirectory()) {
     return 0;
   }
-  //TODO:: only allow .txt
-  
+  //only allow .txt
+  int len = strlen(file->name());
+  //writeSerialLine(&(file->name()[len]) - 3);
+  if(strcmp("TXT", &(file->name()[len]) - 3) != 0){
+    return 0;
+  }
   
   return 1;
 }
@@ -68,10 +72,10 @@ const String selectFile(){
       //writeSerial(i);
       //writeSerial(false, false, F(" "));
       
-      String labelStr = entries.get(i)->getLabelStr();
-      writeSerial(false, true, F("\""));
-      writeSerial(false, false, labelStr.c_str());
-      writeSerial(true, false, F("\""));
+      //String labelStr = entries.get(i)->getLabelStr();
+      //writeSerial(false, true, F("\""));
+      //writeSerial(false, false, labelStr.c_str());
+      //writeSerial(true, false, F("\""));
       i++;
       curEntry.close();
     }while(true);
@@ -114,7 +118,7 @@ void setupSD(){
   SdVolume SD_VOLUME;
   
   if (!SD_CARD.init(SPI_HALF_SPEED, SD_CS)) {    
-    displayErrMessage(F("SD Card inserted?"), false);
+    displayErrMessage(F("SD Card in?"), false);
     alertStatus(SD_ERR_IND, true);
   }
   

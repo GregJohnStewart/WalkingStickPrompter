@@ -49,8 +49,8 @@ inline const unsigned int RIGHT_BUTTON = 10;
 inline const unsigned int BUTT_ARR[] = {UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIGHT_BUTTON};
 
 inline const unsigned int YES_BUTTON = RIGHT_BUTTON;
-inline const unsigned int NO_BUTTON = LEFT_BUTTON;
-inline const unsigned int CANCEL_BUTTON = LEFT_BUTTON;
+//inline const unsigned int NO_BUTTON = LEFT_BUTTON;
+//inline const unsigned int CANCEL_BUTTON = LEFT_BUTTON;
 inline const unsigned int SELECT_BUTTON = RIGHT_BUTTON;
 inline const unsigned int BACK_BUTTON = LEFT_BUTTON;
 

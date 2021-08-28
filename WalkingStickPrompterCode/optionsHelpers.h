@@ -5,7 +5,7 @@
 #include <LinkedList.h>
 
 void selectNewTextSizeOption(){
-  const int minVal = 1;
+  const int minVal = 2;
   const int maxVal = 5;
   int curButtonPress = -1;
   
@@ -14,7 +14,7 @@ void selectNewTextSizeOption(){
     TFT.fillScreen(ILI9341_BLACK);
     TFT.setCursor(0, 0);
     TFT.setTextSize(MENU_FONT_SIZE);
-    TFT.println(F("Select a reading size:"));
+    TFT.println(F("Reading Text Size:"));
     printSepToTFT(MENU_FONT_SIZE);
     
     TFT.println(OPTIONS.readingFontSize);
@@ -23,12 +23,14 @@ void selectNewTextSizeOption(){
     TFT.println(F("Example:"));
     TFT.println();
     TFT.setTextSize(OPTIONS.readingFontSize);
-    TFT.println(F("Example"));
+    TFT.println(F("Text"));
     TFT.setTextSize(MENU_FONT_SIZE);
     TFT.println();
     
     TFT.print(F("Columns: "));
-    TFT.print(getNumCols(OPTIONS.readingFontSize));
+    TFT.println(getNumCols(OPTIONS.readingFontSize));
+    TFT.print(F("Rows: "));
+    TFT.println(getNumRows(OPTIONS.readingFontSize));
     
     
     curButtonPress = waitForButtonPress();
@@ -64,11 +66,11 @@ void doOptions(){
   const int textColorOptionId = 1;
   
   entries.add(new MenuEntry(textSizeOptionId, F("Reading Text Size")));
-  entries.add(new MenuEntry(textColorOptionId, F("Reading Text Color")));
+  //entries.add(new MenuEntry(textColorOptionId, F("Reading Text Color")));
   
   int curSelectedId = -1;
   do{
-    MenuEntry* selected = selectEntry(F("Select an Option:"), &entries);
+    MenuEntry* selected = selectEntry(F("Options:"), &entries);
     
     if(selected == NULL){
       curSelectedId = -1;
