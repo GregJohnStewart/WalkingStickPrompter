@@ -108,17 +108,8 @@ void outFreeRam(){
   writeSerialLine(freeRam());
 }
 
-const char * CF(const __FlashStringHelper * line){
-  size_t len = strlen_PF(line);
-  writeSerial(F("size of string in flash: "));
-  writeSerialLine(len);
-  char* output = new char[len];
-  strncpy_PF(output, line, len);
-  return output;
-}
-
 void displaySplashScreen(){
-  writeSerialLine(F("Displaying Splash Screen..."));
+  writeSerialLine(F("Showing Splash Screen..."));
   CUR_TAB_LEVEL++;
   
   //TFT.fillScreen(ILI9341_BLACK);

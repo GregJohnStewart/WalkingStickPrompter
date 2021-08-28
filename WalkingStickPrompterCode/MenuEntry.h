@@ -11,7 +11,6 @@ private:
     const __FlashStringHelper * labelPointer;
     const String labelStr;
     bool flash = false;// flag to determine if pointer is flash or String
-    bool clearDataOnDestruct = true;
 
 public:
     /**

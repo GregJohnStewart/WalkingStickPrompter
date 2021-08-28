@@ -30,12 +30,6 @@ const char validFile(File* file){
 const String selectFile(){
   writeSerialLine(F("Selecting file..."));
   CUR_TAB_LEVEL++;
-  //inline SdVolume volume;
-  
-  //TODO:: get file list into MenuEntries, ignore '.*' files
-  
-  //TODO:: pass to MenuEntries Selector to get entry
-  //TODO:: return file
   
   const char* dir = "/";
   //const int numFiles = getNumFilesInDir(dir);
@@ -84,7 +78,7 @@ const String selectFile(){
   CUR_TAB_LEVEL--;
   writeSerialLine(F("DONE."));
   
-  MenuEntry* selected = selectEntry(F("Select a file:"), &entries);
+  MenuEntry* selected = selectEntry(F("Select file:"), &entries);
   
   String output;
   if(selected == NULL){
@@ -134,23 +128,23 @@ void setupSD(){
   
   
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done Setting up SD."));
+  writeSerialLine(F("Done."));
 }
 
 void writeOptions(){
-  writeSerialLine(F("Writing options to sd..."));
+  writeSerialLine(F("Writing ops to sd..."));
   CUR_TAB_LEVEL++;
   
   File opsFile = SD.open(OPTIONS_FILE, FILE_WRITE | O_TRUNC);
   
   if(!opsFile){
-    displayErrMessage(F("Options file\ncould not be\nopened for\nwriting!"), true);
+    displayErrMessage(F("Ops file\ncould not be\nopened for\nwriting!"), true);
   } else {
     size_t returned = opsFile.write((char*)&OPTIONS, sizeof(OPTIONS));
     opsFile.close();
     
     if(returned == 0 || returned != sizeof(OPTIONS)){
-      displayErrMessage(F("Options file\ncould not be\nwritten!"), true);
+      displayErrMessage(F("Ops file\ncould not be\nwritten!"), true);
     }
   }
   
@@ -177,22 +171,35 @@ void readOptions(){
 }
 
 //TODO:: rework to send to TFT from here, read in one line at a time rather than entire screen
-void readInContentPage(File file, const unsigned long curFileIndex, char * contentBuffer, const int bufferSize){
+void readAndShowContentPage(File file, const unsigned long curFileIndex){
   if(!file.seek(curFileIndex)){
     displayErrMessage(F("Error seeking in file."), true);
   }
   
-  const int numRead = file.read(contentBuffer, bufferSize);
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.setCursor(0, 0);
   
-  if(numRead == -1){
-    displayErrMessage(F("Error reading\nfile."), true);
+  const int numCols = getNumCols(OPTIONS.readingFontSize);
+  const int numRows = getNumRows(OPTIONS.readingFontSize);
+  char contentBuffer[numCols + 1];
+  contentBuffer[numCols] = '\0';//set null terminator, should never be touched when content gets read in
+  
+  const int numRead = 0;
+  for(int i = 0; i < numRows && numRead != -1; i++){
+    const int numRead = file.read(contentBuffer, numCols);
+  
+    if(numRead == -1){
+      continue;
+      //displayErrMessage(F("Error reading\nfile."), true);
+    }
+  
+    contentBuffer[numRead] = '\0';
+    TFT.print(contentBuffer);
   }
-  
-  contentBuffer[numRead] = '\0';
 }
 
 void readFileContent(String location){
-  writeSerialLine(F("Reading file content to user."));
+  writeSerialLine(F("Reading file to user."));
   CUR_TAB_LEVEL++;
   
   File file = SD.open(location, FILE_READ);
@@ -200,28 +207,22 @@ void readFileContent(String location){
     displayErrMessage(F("Unable to open\nfile for reading."), true);
   }
   
+  
   const int numCharsToShow = getNumChars(OPTIONS.readingFontSize);
   const unsigned long fileSize = file.size();
   unsigned long curFileIndex = 0;
   unsigned long indexUpperBound = ((fileSize < numCharsToShow) ? 0 : (fileSize - (numCharsToShow/2)));
-  char contentBuffer[numCharsToShow + 1];
   unsigned int buttonPressed = 0;
   
-  
-  contentBuffer[numCharsToShow] = '\0';//set null terminator, should never be touched when content gets read in
-  writeSerial(F("Num chars on screen: "));
-  writeSerialLine(numCharsToShow);
+  //writeSerial(F("Num chars on screen: "));
+  //writeSerialLine(numCharsToShow);
   outFreeRam();
   
   TFT.setTextColor(OPTIONS.readingFontColor);
   TFT.setTextSize(OPTIONS.readingFontSize);
   
   do{
-    readInContentPage(file, curFileIndex, contentBuffer, numCharsToShow);
-    
-    TFT.fillScreen(ILI9341_BLACK);
-    TFT.setCursor(0, 0);
-    TFT.print(contentBuffer);
+    readAndShowContentPage(file, curFileIndex);
     
     do{//only allow button press for back, up, and down
       buttonPressed = waitForButtonPress();

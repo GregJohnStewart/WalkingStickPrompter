@@ -5,7 +5,7 @@
 #include <LinkedList.h>
 
 void selectNewTextSizeOption(){
-  const int minVal = 2;
+  const int minVal = 1;
   const int maxVal = 5;
   int curButtonPress = -1;
   

@@ -23,7 +23,7 @@ inline int CUR_TAB_LEVEL = 0;
 /**
  * Serial Logging
  */
-inline bool SERIAL_LOGS_ENABLED = true;
+inline bool SERIAL_LOGS_ENABLED = false;
 inline const int SERIAL_LOG_BAUD = 9600;
 
 /*
