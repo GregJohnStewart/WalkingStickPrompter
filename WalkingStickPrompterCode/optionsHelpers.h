@@ -3,6 +3,7 @@
 
 #include "sdHelpers.h"
 #include <LinkedList.h>
+#include "Adafruit_ILI9341.h"
 
 void selectNewTextSizeOption(){
   const int minVal = 1;
@@ -27,7 +28,7 @@ void selectNewTextSizeOption(){
     TFT.setTextSize(MENU_FONT_SIZE);
     TFT.println();
     
-    TFT.print(F("Columns: "));
+    TFT.print(F("Cols: "));
     TFT.println(getNumCols(OPTIONS.readingFontSize));
     TFT.print(F("Rows: "));
     TFT.println(getNumRows(OPTIONS.readingFontSize));
@@ -55,8 +56,62 @@ void selectNewTextSizeOption(){
     OPTIONS.readingFontSize = original;
   }
 }
-void selectNewTextColorOption(){
 
+void selectNewTextColorOption(){
+  LinkedList<MenuEntry*> entries = LinkedList<MenuEntry*>();
+  
+  entries.add(new MenuEntry(ILI9341_WHITE, F("White")));
+  entries.add(new MenuEntry(ILI9341_RED, F("Red")));
+  entries.add(new MenuEntry(ILI9341_DARKGREY, F("Grey")));
+  entries.add(new MenuEntry(ILI9341_GREENYELLOW, F("Lime")));
+  
+  MenuEntry* selected = selectEntry(F("Colors:"), &entries);
+  
+  if(selected != NULL){
+    OPTIONS.readingFontColor = selected->getId();
+  }
+  
+  while(entries.size() > 0){
+    MenuEntry* cur = entries.shift();
+    delete cur;
+  }
+}
+void selectNewBacklightOption(){
+  const byte minVal = 15;
+  const byte maxVal = 255;
+  
+  int curButtonPress = -1;
+  
+  TFT.fillScreen(ILI9341_BLACK);
+  TFT.setCursor(0, 0);
+  TFT.setTextSize(MENU_FONT_SIZE);
+  TFT.println(F("Backlight\n"));
+  TFT.setTextColor(OPTIONS.readingFontColor);
+  TFT.setTextSize(OPTIONS.readingFontSize);
+  TFT.println(F("Example Txt"));
+  
+  const byte original = OPTIONS.backlightLevel;
+  do{
+    delay(1000);
+    analogWrite(TFT_BACKLIGHT, OPTIONS.backlightLevel);
+    
+    curButtonPress = waitForButtonPress();
+    
+    if(curButtonPress == UP_BUTTON){
+      if(OPTIONS.backlightLevel != maxVal){
+        OPTIONS.backlightLevel += 40;
+      }
+    }
+    if(curButtonPress == DOWN_BUTTON){
+      if(OPTIONS.backlightLevel != minVal){
+        OPTIONS.backlightLevel -= 40;
+      }
+    }
+  }while(curButtonPress != BACK_BUTTON && curButtonPress != YES_BUTTON);
+  
+  if(curButtonPress == BACK_BUTTON){
+    OPTIONS.readingFontSize = original;
+  }
 }
 
 
@@ -64,13 +119,15 @@ void doOptions(){
   LinkedList<MenuEntry*> entries = LinkedList<MenuEntry*>();
   const int textSizeOptionId = 0;
   const int textColorOptionId = 1;
+  const int backlightOptionId = 2;
   
-  entries.add(new MenuEntry(textSizeOptionId, F("Reading Text Size")));
-  //entries.add(new MenuEntry(textColorOptionId, F("Reading Text Color")));
+  entries.add(new MenuEntry(textSizeOptionId, F("Txt Size")));
+  entries.add(new MenuEntry(textColorOptionId, F("Txt Color")));
+  entries.add(new MenuEntry(backlightOptionId, F("Backlight")));
   
   int curSelectedId = -1;
   do{
-    MenuEntry* selected = selectEntry(F("Options:"), &entries);
+    MenuEntry* selected = selectEntry(F("Ops:"), &entries);
     
     if(selected == NULL){
       curSelectedId = -1;
@@ -85,6 +142,9 @@ void doOptions(){
         break;
       case textColorOptionId:
         selectNewTextColorOption();
+        break;
+      case backlightOptionId:
+        selectNewBacklightOption();
         break;
     }
     

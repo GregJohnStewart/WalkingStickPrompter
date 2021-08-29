@@ -4,8 +4,8 @@
 #include "globals.h"
 
 void setupTft(){
-  writeSerialLine(F("Setting up TFT Display..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Setting up TFT Display..."));
+  //CUR_TAB_LEVEL++;
   TFT.begin();
   TFT.setRotation(3);
   //{
@@ -23,8 +23,8 @@ void setupTft(){
     //writeSerialLine("Width: " + String(TFT.width()));
   //}
   TFT.fillScreen(ILI9341_BLACK);
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("DONE Setting up TFT Display."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
 }
 
 

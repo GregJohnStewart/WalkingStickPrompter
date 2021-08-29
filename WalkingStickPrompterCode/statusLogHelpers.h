@@ -9,29 +9,12 @@
 
 #include "Arduino.h"
 #include "globals.h"
-#include "tftSdModuleHelpers.h"
 
 void turnStatusLightOn(){
   digitalWrite(STATUS_LED, HIGH);
 }
 void turnStatusLightOff(){
   digitalWrite(STATUS_LED, LOW);
-}
-
-void alertStatus(int ind, bool indefinately){
-  turnStatusLightOff();
-  do {
-    for(int i = 0; i < ind; i++){
-      turnStatusLightOn();
-      delay(ALERT_STATUS_BLINK_ON_DUR);
-      turnStatusLightOff();
-      delay(ALERT_STATUS_BLINK_OFF_DUR);
-    }
-    if(indefinately){
-      delay(ALERT_STATUS_BLINK_OFF_DUR * 2);
-    }
-    //Serial.println("alerted");
-  } while(indefinately);
 }
 
 int freeRam () {
@@ -104,25 +87,25 @@ void writeSerial(int num){
 }
 
 void outFreeRam(){
-  writeSerial(F("Free ram: "));
+  writeSerial(F("Ram: "));
   writeSerialLine(freeRam());
 }
 
 void displaySplashScreen(){
-  writeSerialLine(F("Showing Splash Screen..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Showing Splash Screen..."));
+  //CUR_TAB_LEVEL++;
   
   //TFT.fillScreen(ILI9341_BLACK);
   
   TFT.setCursor(0, 0);
   TFT.setTextColor(ILI9341_WHITE);
   TFT.setTextSize(4);
-  TFT.println(F("Walking Stick\nPrompter"));
+  TFT.println(F("Walking Stick\nPrompter\n"));
   
   TFT.setTextSize(3);
   TFT.print(F("V"));
   
-  TFT.setTextColor(ILI9341_YELLOW);
+  TFT.setTextColor(ILI9341_GREEN);
   TFT.println(VERSION);
   
   TFT.setTextColor(ILI9341_WHITE);
@@ -142,11 +125,11 @@ void displaySplashScreen(){
   TFT.setTextColor(ILI9341_WHITE);
   
   
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
 }
 
-void displayErrMessage(const char* message, const bool hang){
+void displayErrMessage(const __FlashStringHelper * message){
   writeSerialLine(message);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setCursor(0, 0);
@@ -154,23 +137,7 @@ void displayErrMessage(const char* message, const bool hang){
   TFT.setTextSize(3);
   TFT.println(message);
   
-  if(hang){
-    while(1);
-  }
-}
-
-
-void displayErrMessage(const __FlashStringHelper * message, const bool hang){
-  writeSerialLine(message);
-  TFT.fillScreen(ILI9341_BLACK);
-  TFT.setCursor(0, 0);
-  TFT.setTextColor(ILI9341_RED);
-  TFT.setTextSize(3);
-  TFT.println(message);
-  
-  if(hang){
-    while(1);
-  }
+  while(1);
 }
 
 

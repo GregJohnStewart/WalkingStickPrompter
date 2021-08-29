@@ -23,7 +23,7 @@ inline int CUR_TAB_LEVEL = 0;
 /**
  * Serial Logging
  */
-inline bool SERIAL_LOGS_ENABLED = false;
+inline bool SERIAL_LOGS_ENABLED = true;
 inline const int SERIAL_LOG_BAUD = 9600;
 
 /*
@@ -44,7 +44,7 @@ inline const unsigned int SD_ERR_IND = 3;
 inline const unsigned int UP_BUTTON = 4;
 inline const unsigned int DOWN_BUTTON = 3;
 inline const unsigned int LEFT_BUTTON = 2;
-inline const unsigned int RIGHT_BUTTON = 10;
+inline const unsigned int RIGHT_BUTTON = A3;
 
 inline const unsigned int BUTT_ARR[] = {UP_BUTTON, DOWN_BUTTON, LEFT_BUTTON, RIGHT_BUTTON};
 
@@ -65,6 +65,7 @@ inline const unsigned int MAX_NUM_MENU_ENTRIES = 10;
 inline const unsigned int TFT_CS = 6;
 inline const unsigned int TFT_DC = 9;
 inline const unsigned int TFT_RST = -1;
+inline const unsigned int TFT_BACKLIGHT = 10;
  
  
 /*
@@ -81,12 +82,6 @@ inline int BASE_FONT_WIDTH = 6;//pixels
 inline int MENU_FONT_SIZE = 2;
 
 /*
- * SD Objects
- */
-
-
-
-/*
  * Globals for SD
  */
 inline const int SD_CS = 5;
@@ -96,6 +91,11 @@ inline const int SD_CS = 5;
  */
 inline Options OPTIONS = Options();
 inline char OPTIONS_FILE[9] = "/ops.dat";
+
+/*
+ * Flash pointers
+ */
+inline const __FlashStringHelper * DONE_STR = nullptr;
 
 
 #endif

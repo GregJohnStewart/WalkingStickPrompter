@@ -11,7 +11,6 @@ private:
     const __FlashStringHelper * labelPointer;
     const String labelStr;
     bool flash = false;// flag to determine if pointer is flash or String
-
 public:
     /**
      *  don't use, for handling arrays of MenuEntries
@@ -29,8 +28,6 @@ public:
     const String getLabelStr();
     
     const __FlashStringHelper* getLabelFlash();
-        
-    ~MenuEntry();
 };
 
 #endif

@@ -31,7 +31,3 @@ const String MenuEntry::getLabelStr(){
 const __FlashStringHelper* MenuEntry::getLabelFlash(){
     return labelPointer;
 }
-
-MenuEntry::~MenuEntry(){
-    
-}

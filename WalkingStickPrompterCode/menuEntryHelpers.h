@@ -49,9 +49,9 @@ void drawMenu(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries
 }
 
 MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>* entries){
-  writeSerialLine(F("Selecting entry..."));
-  CUR_TAB_LEVEL++;
-  outFreeRam();
+  //writeSerialLine(F("Selecting entry..."));
+  //CUR_TAB_LEVEL++;
+  //outFreeRam();
   
   int curSelection = 0;
   int buttonPressed = -1;
@@ -79,15 +79,15 @@ MenuEntry* selectEntry(const __FlashStringHelper * title, LinkedList<MenuEntry*>
     }
   }while(buttonPressed != SELECT_BUTTON && buttonPressed != BACK_BUTTON);
   
-  CUR_TAB_LEVEL--;
-  writeSerial(F("Done: "));
+  //CUR_TAB_LEVEL--;
+  //writeSerial(DONE_STR);
   
   MenuEntry* output = NULL;
   if(buttonPressed == BACK_BUTTON){
-    writeSerial(true, false, F("<none>"));
+    //writeSerial(true, false, F("<none>"));
   } else {
     output = entries->get(curSelection);
-    writeSerialLine(curSelection);
+    //writeSerialLine(curSelection);
   }
   
   return output;

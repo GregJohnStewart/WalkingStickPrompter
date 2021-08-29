@@ -11,17 +11,17 @@
 #include "menuEntryHelpers.h"
 #include "tftHelpers.h"
 #include "sdHelpers.h"
-#include "tftSdModuleHelpers.h"
 #include "screenSizeHelpers.h"
 #include "optionsHelpers.h"
 
-int temp = 1;
-
 void setup() {
+  DONE_STR = F("Done.");
   // Setup, turn on status light during setup
   pinMode(STATUS_LED, OUTPUT);
   pinMode(TFT_CS, OUTPUT);
   pinMode(SD_CS, OUTPUT);
+  pinMode(TFT_BACKLIGHT, OUTPUT);
+  analogWrite(TFT_BACKLIGHT, 255);
   
   turnStatusLightOn();
 
@@ -30,7 +30,7 @@ void setup() {
     SERIAL_LOGS_ENABLED = false;
   }
   
-  writeSerialLine(F("\n\n\nBegin Setup..."));
+  writeSerialLine(F("\n\n\nBegin Setup"));
   CUR_TAB_LEVEL++;
 
   setupButtons();
@@ -56,11 +56,13 @@ void setup() {
   outFreeRam();
 
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("Setup Complete."));
+  writeSerialLine(DONE_STR);
   delay(1000);
+  analogWrite(TFT_BACKLIGHT, OPTIONS.backlightLevel);
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
   TFT.setTextSize(MENU_FONT_SIZE);
+  
 }
 
 /**
@@ -79,9 +81,10 @@ void setup() {
         - no button, done, back around
     4. Done
 */
+byte curVal = 0;
 void loop() {
-  writeSerialLine(F("START program cycle"));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("START program cycle"));
+  //CUR_TAB_LEVEL++;
   outFreeRam();
 
   const String fileChosen = selectFile();
@@ -97,8 +100,8 @@ void loop() {
   }
   
   outFreeRam();
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("END program cycle."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(F("END program cycle."));
 }
 
 

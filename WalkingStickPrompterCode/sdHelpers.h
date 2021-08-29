@@ -2,7 +2,6 @@
 #define SD_HELPERS_H
 
 #include "globals.h"
-#include "tftSdModuleHelpers.h"
 #include "SD.h"
 #include <LinkedList.h>
 
@@ -76,7 +75,7 @@ const String selectFile(){
   }
   root.close();
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("DONE."));
+  writeSerialLine(DONE_STR);
   
   MenuEntry* selected = selectEntry(F("Select file:"), &entries);
   
@@ -94,7 +93,7 @@ const String selectFile(){
   }
   
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("DONE."));
+  writeSerialLine(DONE_STR);
   
   if(selected == NULL){
     return output;
@@ -105,30 +104,26 @@ const String selectFile(){
 
 
 void setupSD(){
-  writeSerialLine(F("Setting up SD..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Setting up SD..."));
+  //CUR_TAB_LEVEL++;
   
   Sd2Card SD_CARD;
   SdVolume SD_VOLUME;
   
   if (!SD_CARD.init(SPI_HALF_SPEED, SD_CS)) {    
-    displayErrMessage(F("SD Card in?"), false);
-    alertStatus(SD_ERR_IND, true);
+    displayErrMessage(F("SD Card in?"));
   }
   
   if (!SD_VOLUME.init(SD_CARD)) {    
-    displayErrMessage(F("SD Card FAT?"), false);
-    alertStatus(SD_ERR_IND, true);
+    displayErrMessage(F("SD Card FAT?"));
   }
   
   if (!SD.begin(SD_CS)) {
-    displayErrMessage(F("SD CARD ERR"), false);
-    alertStatus(SD_ERR_IND, true);
+    displayErrMessage(F("SD CARD ERR"));
   }
   
-  
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
 }
 
 void writeOptions(){
@@ -138,23 +133,23 @@ void writeOptions(){
   File opsFile = SD.open(OPTIONS_FILE, FILE_WRITE | O_TRUNC);
   
   if(!opsFile){
-    displayErrMessage(F("Ops file\ncould not be\nopened for\nwriting!"), true);
+    displayErrMessage(F("Ops file\ncould not be\nopened for\nwriting!"));
   } else {
     size_t returned = opsFile.write((char*)&OPTIONS, sizeof(OPTIONS));
     opsFile.close();
     
     if(returned == 0 || returned != sizeof(OPTIONS)){
-      displayErrMessage(F("Ops file\ncould not be\nwritten!"), true);
+      displayErrMessage(F("Ops file\ncould not be\nwritten!"));
     }
   }
   
   CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done."));
+  writeSerialLine(DONE_STR);
 }
 
 void readOptions(){
-  writeSerialLine(F("Reading ops from sd..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Reading ops from sd..."));
+  //CUR_TAB_LEVEL++;
   
   File opsFile = SD.open(OPTIONS_FILE, FILE_READ);
   
@@ -166,14 +161,14 @@ void readOptions(){
     opsFile.close();
   }
   
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
 }
 
 //TODO:: rework to send to TFT from here, read in one line at a time rather than entire screen
 void readAndShowContentPage(File file, const unsigned long curFileIndex){
   if(!file.seek(curFileIndex)){
-    displayErrMessage(F("Error seeking in file."), true);
+    displayErrMessage(F("Error seeking in file."));
   }
   
   TFT.fillScreen(ILI9341_BLACK);
@@ -190,7 +185,7 @@ void readAndShowContentPage(File file, const unsigned long curFileIndex){
   
     if(numRead == -1){
       continue;
-      //displayErrMessage(F("Error reading\nfile."), true);
+      //displayErrMessage(F("Error reading\nfile."));
     }
   
     contentBuffer[numRead] = '\0';
@@ -199,12 +194,12 @@ void readAndShowContentPage(File file, const unsigned long curFileIndex){
 }
 
 void readFileContent(String location){
-  writeSerialLine(F("Reading file to user."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Reading file to user."));
+  //CUR_TAB_LEVEL++;
   
   File file = SD.open(location, FILE_READ);
   if(!file){
-    displayErrMessage(F("Unable to open\nfile for reading."), true);
+    displayErrMessage(F("Unable to open\nfile for reading."));
   }
   
   
@@ -246,8 +241,8 @@ void readFileContent(String location){
   file.close();
   
   
-  CUR_TAB_LEVEL--;
-  writeSerialLine(F("Done."));
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
 }
 
 #endif

@@ -9,9 +9,9 @@ private:
   //unsigned int readingFontColor = ILI9341_WHITE;
 
 public:
-
   unsigned int readingFontSize = 2;
   unsigned int readingFontColor = ILI9341_WHITE;
+  byte backlightLevel = 255;
 };
 
 #endif
