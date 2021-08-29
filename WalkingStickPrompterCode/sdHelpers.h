@@ -5,6 +5,13 @@
 #include "SD.h"
 #include <LinkedList.h>
 
+bool isTxt(const char* ext){
+  return strcmp("TXT", ext) == 0;
+}
+
+const char* getExt(const char* file, int len){
+  return &(file[len]) - 3;
+}
 
 const char validFile(File* file){
   if(!*file){
@@ -19,7 +26,9 @@ const char validFile(File* file){
   //only allow .txt
   int len = strlen(file->name());
   //writeSerialLine(&(file->name()[len]) - 3);
-  if(strcmp("TXT", &(file->name()[len]) - 3) != 0){
+  if(
+    !isTxt(getExt(file->name(), len))
+  ){
     return 0;
   }
   
@@ -27,8 +36,8 @@ const char validFile(File* file){
 }
 
 const String selectFile(){
-  writeSerialLine(F("Selecting file..."));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Selecting file..."));
+  //CUR_TAB_LEVEL++;
   
   const char* dir = "/";
   //const int numFiles = getNumFilesInDir(dir);
@@ -38,8 +47,8 @@ const String selectFile(){
   File root = SD.open(dir);
   //writeSerialLine(F("Opened root"));
   
-  writeSerialLine(F("Getting File List"));
-  CUR_TAB_LEVEL++;
+  //writeSerialLine(F("Getting File List"));
+  //CUR_TAB_LEVEL++;
   {
     int i = 0;
     File curEntry;
@@ -74,8 +83,8 @@ const String selectFile(){
     }while(true);
   }
   root.close();
-  CUR_TAB_LEVEL--;
-  writeSerialLine(DONE_STR);
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
   
   MenuEntry* selected = selectEntry(F("Select file:"), &entries);
   
@@ -92,8 +101,8 @@ const String selectFile(){
     delete cur;
   }
   
-  CUR_TAB_LEVEL--;
-  writeSerialLine(DONE_STR);
+  //CUR_TAB_LEVEL--;
+  //writeSerialLine(DONE_STR);
   
   if(selected == NULL){
     return output;

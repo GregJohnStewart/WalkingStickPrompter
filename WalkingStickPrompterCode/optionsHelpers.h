@@ -79,38 +79,44 @@ void selectNewTextColorOption(){
 void selectNewBacklightOption(){
   const byte minVal = 15;
   const byte maxVal = 255;
+  const byte incNum = (maxVal - minVal) / 4;
   
   int curButtonPress = -1;
   
-  TFT.fillScreen(ILI9341_BLACK);
-  TFT.setCursor(0, 0);
-  TFT.setTextSize(MENU_FONT_SIZE);
-  TFT.println(F("Backlight\n"));
-  TFT.setTextColor(OPTIONS.readingFontColor);
-  TFT.setTextSize(OPTIONS.readingFontSize);
-  TFT.println(F("Example Txt"));
-  
   const byte original = OPTIONS.backlightLevel;
   do{
-    delay(1000);
     analogWrite(TFT_BACKLIGHT, OPTIONS.backlightLevel);
+    TFT.fillScreen(ILI9341_BLACK);
+    TFT.setCursor(0, 0);
+    TFT.setTextSize(MENU_FONT_SIZE);
+    TFT.println(F("Backlight\n"));
+    TFT.print(F("Value: "));
+    TFT.println(OPTIONS.backlightLevel);
+    TFT.println();
+    TFT.setTextColor(OPTIONS.readingFontColor);
+    TFT.setTextSize(OPTIONS.readingFontSize);
+    TFT.println(F("Example Txt\n"));
+    TFT.setTextColor(ILI9341_WHITE);
+    
+    
+    
     
     curButtonPress = waitForButtonPress();
     
     if(curButtonPress == UP_BUTTON){
       if(OPTIONS.backlightLevel != maxVal){
-        OPTIONS.backlightLevel += 40;
+        OPTIONS.backlightLevel += incNum;
       }
     }
     if(curButtonPress == DOWN_BUTTON){
       if(OPTIONS.backlightLevel != minVal){
-        OPTIONS.backlightLevel -= 40;
+        OPTIONS.backlightLevel -= incNum;
       }
     }
   }while(curButtonPress != BACK_BUTTON && curButtonPress != YES_BUTTON);
   
   if(curButtonPress == BACK_BUTTON){
-    OPTIONS.readingFontSize = original;
+    OPTIONS.backlightLevel = original;
   }
 }
 

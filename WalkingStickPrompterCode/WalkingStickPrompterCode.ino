@@ -62,7 +62,6 @@ void setup() {
   TFT.fillScreen(ILI9341_BLACK);
   TFT.setTextColor(ILI9341_WHITE, ILI9341_BLACK);
   TFT.setTextSize(MENU_FONT_SIZE);
-  
 }
 
 /**
