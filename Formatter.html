@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <title>File Formatter for WalkingStickPrompter</title>
+  <style>
+  #initialInput {
+      width: 100%;
+      min-width:100%;
+      min-height:200px;
+  }
+  #outputContainer {
+      padding: 10px solid;
+      border: 3px solid;
+      max-height: 750px;
+      overflow-y:auto;
+  }
+  #plainOutput {
+      width: 100%;
+      min-width:100%;
+      min-height:200px;
+  }
+  .textView {
+    font-family: "Lucida Console", "Courier New", monospace;
+  }
+  .outputCell {
+      float:left;
+      border: 1px solid;
+      padding: 0px;
+      margin: 10px;
+      white-space: pre-wrap;
+      white-space: -moz-pre-wrap;
+      white-space: -pre-wrap;
+      white-space: -o-pre-wrap;
+      overflow-wrap: break-word;     
+      white-space: break-spaces;
+      word-break: break-all;
+  }
+  .size1 {/* 30rx53c */
+      font-size: 1em;
+      letter-spacing:5px;
+      line-spacing:5px;
+      width: calc(((1ch + 5px) * 53) + 1px);
+      height: calc((1ex + 5px) * 41.5);
+  }
+  .size2 {/* 15rx26c */
+      font-size: 2em;
+      letter-spacing:5px;
+      line-spacing:5px;
+      width: calc((1ch + 5px) * 26);
+      height: calc((1ex + 5px) * 26);
+  }
+  .size3 {/* 10rx17c */
+      font-size: 3em;
+      letter-spacing:5px;
+      line-spacing:5px;
+      width: calc((1ch + 5px) * 17);
+      height: calc((1ex + 5px) * 19);
+  }
+  .size4 {/* 7rx13c */
+      font-size: 4em;
+      letter-spacing:5px;
+      line-spacing:5px;
+      width: calc((1ch + 5px) * 13);
+      height: calc((1ex + 5px) * 14);
+  }
+  .size5 {/* 6rx10c */
+      font-size: 5em;
+      letter-spacing:5px;
+      line-spacing:5px;
+      width: calc((1ch + 5px) * 10);
+      height: calc((1ex + 5px) * 13);
+  }
+  </style>
+</head>
+<body>
+  <h1>
+  File Formatter for WalkingStickPrompter
+  </h1>
+  <a href="https://github.com/GregJohnStewart/WalkingStickPrompter"></a>
+  <p>
+    This tool takes a file and formats it for use in the Walking Stick Prompter. Since the microcontroller that runs it is limited, we need to pre format.
+  </p>
+  <hr />
+  
+  <h3>Choose a file:</h3>
+  <input type="file" id="fileInput" accept=".txt" />
+  
+  <hr />
+  <h3>Input Text:</h3>
+  <p>(Tweak this to get the output right!)</p>
+  <button id="inputSaveButton">Save to File</button>
+  <textarea id="initialInput" class="textView"></textarea>
+  <hr />
+  <h3>Output:</h3>
+  <p>
+  Font size:
+  <select id="sizeOptions">
+    <option data-rows="30" data-cols="53">1</option>
+    <option data-rows="15" data-cols="26" selected>2</option>
+    <option data-rows="10" data-cols="17">3</option>
+    <option data-rows="7" data-cols="13">4</option>
+    <option data-rows="6" data-cols="10">5</option>
+  </select>
+  </p>
+  <h5>As seen on the screen:</h5>
+  <br style="clear:both" />
+  <div id="outputContainer"></div>
+  <br style="clear:both" />
+  <h5>Plain text:</h5>
+  <button id="saveButton">Save to File</button>
+  <button id="moveButton">Move to input</button>
+  <textarea id="plainOutput" class="textView"></textarea>
+  
+  
+  <script>
+    var fileInput = document.getElementById('fileInput');
+    var initialInput = document.getElementById('initialInput');
+    var sizeOptions = document.getElementById('sizeOptions');
+    var outputContainer = document.getElementById('outputContainer');
+    var plainOutput = document.getElementById('plainOutput');
+    var inputSaveButton = document.getElementById('inputSaveButton');
+    var saveButton = document.getElementById('saveButton');
+    var moveButton = document.getElementById('moveButton');
+    
+    
+    const downloadToFile = (content, filename, contentType) => {
+      const a = document.createElement('a');
+      const file = new Blob([content], {type: contentType});
+  
+      a.href= URL.createObjectURL(file);
+      a.download = filename;
+      a.click();
+
+      URL.revokeObjectURL(a.href);
+    };
+    
+    function triggerInputChange(){
+      // output.dispatchEvent(new Event('change'));
+        
+        if ("createEvent" in document) {
+          var evt = document.createEvent("HTMLEvents");
+          evt.initEvent("change", false, true);
+          initialInput.dispatchEvent(evt);
+        } else {
+          initialInput.fireEvent("onchange");
+        }
+    }
+    
+    function getIndInRow(i, numCols){
+        return i % numCols;
+    }
+    
+    function getSpaces(numSpaces){
+      spaces = "";
+      
+      for(let i = 0; i < numSpaces; i++){
+          spaces += " ";
+      }
+      
+      return spaces;
+    }
+    
+    function updateOutput(){
+      //TODO:: reformat content
+      (async () => {
+          let curClass = "size" + sizeOptions.value
+          let curNumCols = sizeOptions.selectedOptions[0].dataset.cols;
+          let curNumChars = sizeOptions.selectedOptions[0].dataset.rows * sizeOptions.selectedOptions[0].dataset.cols;
+          let content = initialInput.value
+          
+          content = content.replaceAll("\r", "");
+          content = content.replaceAll("[^\x00-\x7F]", "");
+          
+          //TODO:: iterate through, clear newlines and replace with appropriate number of spaces
+          for(let i = 0; i < content.length; i++){
+            if(content[i] === "\n"){
+              console.log("newline!");
+              
+              //find position in line
+              let iInRow = getIndInRow(i, curNumCols);
+              
+              console.log("iInRow = " + iInRow);
+              
+              let numSpacesToAdd = curNumCols - iInRow;
+              
+              spaces = getSpaces(numSpacesToAdd);
+              
+              content = content.substring(0, i) + spaces + content.substring(i + 1, content.length);
+              
+              i--;
+            }
+          }
+          
+          //content = content.replaceAll("\n\n", "\\n                          ");
+          //content = content.replaceAll("\n\n", "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;");
+          content = content.replaceAll("\n", "");
+          //content = content.replaceAll("\\n", "\n");
+      
+          plainOutput.value = content;
+          outputContainer.innerHTML = '';
+          
+          
+          for(let i = 0; i < content.length; i += curNumChars){
+            let curChunk = content.substring(i, i + curNumChars);
+          
+          
+            let curChunkElem = document.createElement("pre");
+            //curChunk.classList.add("textView");
+            curChunkElem.classList.add("outputCell");
+            curChunkElem.classList.add(curClass);
+            curChunkElem.innerText = curChunk;
+            outputContainer.appendChild(curChunkElem);
+          }
+          
+          console.log("Updated output.");
+      })();
+    }
+
+    fileInput.addEventListener('change', function(e) {
+      let file = fileInput.files[0];
+
+      (async () => {
+        const fileContent = await file.text();
+        
+        initialInput.value = fileContent;
+        
+        triggerInputChange();
+
+        console.log("Read in file contents");
+      })();
+    });
+
+    initialInput.addEventListener('change', function(e) {
+      updateOutput();
+    });
+    sizeOptions.addEventListener('change', function(e) {
+      updateOutput();
+    });
+    
+    inputSaveButton.addEventListener('click', function(e) {
+      let filePath = fileInput.value;
+      
+      if(filePath == ""){
+        filePath = "out.preFormat.txt";
+      } else {
+        filePath = filePath.replace(/^.*[\\\/]/, '');
+        filePath += ".preFormat.txt";
+      }
+      
+      downloadToFile(initialInput.value, filePath, 'text/plain');
+    });
+    
+    saveButton.addEventListener('click', function(e) {
+      let filePath = fileInput.value;
+      
+      if(filePath == ""){
+        filePath = "out.txt";
+      } else {
+        filePath = filePath.replace(/^.*[\\\/]/, '')
+      }
+      
+      downloadToFile(plainOutput.value, filePath, 'text/plain');
+    });
+    
+    moveButton.addEventListener('click', function(e) {
+      console.log("Moving the output to the input.");
+      initialInput.value = plainOutput.value;
+      triggerInputChange();
+      console.log("Done moving the output to the input.");
+    });
+
+/*
+
+
+    
+    const streamToText = async (blob) => {
+      const readableStream = await blob.getReader();
+      const chunk = await readableStream.read();
+
+      return new TextDecoder('utf-8').decode(chunk.value);
+    };
+
+    const bufferToText = (buffer) => {
+      const bufferByteLength = buffer.byteLength;
+      const bufferUint8Array = new Uint8Array(buffer, 0, bufferByteLength);
+
+      return new TextDecoder().decode(bufferUint8Array);
+    };
+    document.getElementById('foo').addEventListener('change', function(e) {
+      let file = document.getElementById('input').files[0];
+
+      (async () => {
+        const fileContent = await file.text();
+
+        console.log('.text()', fileContent);
+
+        const fileContentStream = await file.stream();
+
+        console.log('.stream()', await streamToText(fileContentStream));
+
+        const buffer = await file.arrayBuffer();
+
+        console.log('.buffer()', bufferToText(buffer));
+
+        const fileSliceBlob = file.slice(0, file.length);
+        const fileSliceBlobStream = await fileSliceBlob.stream();
+
+        console.log('.slice() and .stream()', await streamToText(fileSliceBlobStream));
+        
+        document.getElementById('output').value = fileContent;
+      })();
+    });
+    */
+  </script>
+</body>
+</html>

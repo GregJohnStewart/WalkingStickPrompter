@@ -117,7 +117,9 @@ void selectNewBacklightOption(){
   
   if(curButtonPress == BACK_BUTTON){
     OPTIONS.backlightLevel = original;
+    analogWrite(TFT_BACKLIGHT, OPTIONS.backlightLevel);
   }
+  
 }
 
 
