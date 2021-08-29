@@ -33,6 +33,8 @@ Resources:
 
 - [Adafruit Feather 328P Pinouts](https://learn.adafruit.com/adafruit-feather-328p-atmega328-atmega328p/pinouts)
 - [Adafruit 2.2" TFT Display with SD Card Reader](https://learn.adafruit.com/2-2-tft-display)
+  - https://learn.adafruit.com/2-2-tft-display/adafruit-gfx-library
+  - 
 - [Adafruit ILI9341 Arduino Library](https://github.com/adafruit/Adafruit_ILI9341)
 - [Adafruit TFT Display Example](https://github.com/adafruit/Adafruit_ILI9341/blob/master/examples/graphicstest/graphicstest.ino)
 - [Adafruit Graphics Primitives](https://learn.adafruit.com/adafruit-gfx-graphics-library/graphics-primitives)
@@ -56,11 +58,11 @@ Resources:
 
 Realistic circuit diagram:
 
-![Realistic circuitry view](Circuit Diagram_bb.png)
+![Realistic circuitry view](Circuit_Diagram_bb.png)
 
 Schematic view:
 
-![Schematic View](Circuit Diagram_schem.png)
+![Schematic View](Circuit_Diagram_schem.png)
 
 ### Additional
 
